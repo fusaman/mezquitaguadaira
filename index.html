@@ -14,7 +14,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- ANIMACIONES (Framer Motion) -->
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/framer-motion@6.5.1/dist/framer-motion.js"></script>
     
     <!-- ICONOS (Lucide) -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -30,6 +30,68 @@
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
         html { scroll-behavior: smooth; }
+        
+        /* Estilos Blog */
+        .prose p { margin-bottom: 1.5em; line-height: 1.8; color: #4a5568; }
+        .prose h3 { font-size: 1.5em; font-weight: bold; color: #1a1a1a; margin-top: 2em; margin-bottom: 1em; }
+        .prose blockquote { border-left: 4px solid #cda434; padding-left: 1em; font-style: italic; color: #718096; margin: 2em 0; }
+
+        /* --- ESTILOS LIBROS 3D --- */
+        .book-container { position: relative; width: 220px; height: 320px; perspective: 2000px; margin: 0 auto; }
+        .book-card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; box-shadow: 0 20px 40px rgba(0,0,0,0.15); border-radius: 10px; transition: transform 0.5s ease; }
+        .book-cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #1a1a1a; border-radius: 5px 15px 15px 5px; transform-origin: left; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; padding: 25px; text-align: center; overflow: hidden; box-shadow: inset 10px 0 20px rgba(0,0,0,0.2), 5px 5px 15px rgba(0,0,0,0.1); }
+        .book-cover::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 15px; background: linear-gradient(to right, rgba(255,255,255,0.2), rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.2) 100%); z-index: 20; }
+        .book-inside { position: absolute; top: 2px; left: 2px; width: calc(100% - 4px); height: calc(100% - 4px); background: #fffdf5; border-radius: 4px 14px 14px 4px; z-index: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; padding: 20px; box-shadow: inset 10px 0 20px rgba(0,0,0,0.05); background-image: repeating-linear-gradient(transparent, transparent 19px, #e5e5e5 20px); }
+        .book-container:hover .book-cover { transform: rotateY(-110deg); box-shadow: 10px 10px 30px rgba(0,0,0,0.2); }
+        .style-patrimonio { background: linear-gradient(135deg, #1a5e3a 0%, #0f3d24 100%); color: #cda434; border: 2px solid #1a5e3a; }
+        .style-patrimonio .book-title { color: #fff; font-family: 'Amiri', serif; }
+        .style-patrimonio .book-deco { border: 2px solid #cda434; position: absolute; inset: 15px; border-radius: 4px 10px 10px 4px; opacity: 0.5; pointer-events: none; }
+        .style-historia { background: linear-gradient(135deg, #5d4037 0%, #3e2723 100%); color: #d7ccc8; }
+        .style-historia .book-title { color: #efebe9; font-weight: bold; letter-spacing: 1px; }
+        .style-historia .book-deco { position: absolute; top: 50%; left: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.2); transform: translate(-50%, -50%) rotate(45deg); }
+        .style-cultura { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); color: #93c5fd; }
+        .style-cultura .book-title { color: white; font-style: italic; }
+        .style-cultura .book-pattern { position: absolute; inset: 0; opacity: 0.1; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 10px 10px; }
+        .style-espiritualidad { background: linear-gradient(135deg, #f3f4f6 0%, #d1d5db 100%); color: #1a5e3a; border: 1px solid #ccc; }
+        .style-espiritualidad .book-title { color: #1a1a1a; font-family: 'Amiri', serif; }
+        .style-espiritualidad .book-icon { color: #cda434; font-size: 2rem; margin-bottom: 10px; }
+
+        /* --- PARALLAX BACKGROUND STYLES --- */
+        .parallax-scene {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #02040a 0%, #1a2639 60%, #2c3e50 100%);
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: parpadeo 3s infinite alternate;
+        }
+        @keyframes parpadeo { 0% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        .moon-svg-wrapper {
+            width: 220px;
+            height: 220px;
+            filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8));
+        }
+
+        .mist-layer {
+            background: radial-gradient(ellipse at center bottom, rgba(255,255,255,0.08) 0%, transparent 60%);
+            mix-blend-mode: screen;
+        }
+
+        .vignette {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -37,17 +99,11 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { motion, AnimatePresence } = window.Motion;
+        const { useState, useEffect, useMemo } = React;
+        const { motion, AnimatePresence, useMotionValue, useTransform } = window.Motion;
 
-        // --- COLORES CORPORATIVOS ---
-        const C = {
-            black: '#1a1a1a',
-            dark: '#2d2d2d',
-            silver: '#e5e5e5',
-            gold: '#cda434',
-            white: '#ffffff'
-        };
+        // --- COLORES ---
+        const C = { black: '#1a1a1a', dark: '#2d2d2d', silver: '#e5e5e5', gold: '#cda434', white: '#ffffff' };
 
         // --- ICONOS ---
         const Icon = ({ name, size = 24, className }) => {
@@ -55,7 +111,7 @@
             return <i data-lucide={name} width={size} height={size} className={className}></i>;
         };
 
-        // --- DATOS ---
+        // --- DATOS GLOBALES ---
         const PRAYER_TIMES = [
             { name: 'Fajr', time: '06:45', icon: 'sunrise' },
             { name: 'Shurooq', time: '08:15', icon: 'sun' },
@@ -72,220 +128,240 @@
             { ar: "لا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ", es: "No cree ninguno hasta que ama para su hermano lo que ama para sí mismo.", ref: "Bujari" }
         ];
 
-        // --- TEMAS VISUALES ---
+        const LIBRARY_BOOKS = [
+            { id: 1, title: "Patrimonio Islámico y Turismo Halal", category: "Patrimonio", size: "2.4 MB", url: "#" },
+            { id: 2, title: "Molinos de Alcalá: Evolución Histórica", category: "Historia", size: "1.8 MB", url: "#" },
+            { id: 3, title: "Castillo de Alcalá: Ficha Técnica", category: "Patrimonio", size: "3.1 MB", url: "#" },
+            { id: 4, title: "La Sociedad Andalusí", category: "Historia", size: "4.2 MB", url: "#" },
+            { id: 5, title: "Influencia Árabe en la Lengua", category: "Cultura", size: "1.5 MB", url: "#" },
+            { id: 6, title: "Música de Al-Andalus", category: "Cultura", size: "2.0 MB", url: "#" },
+            { id: 7, title: "El Sufismo y la Música", category: "Espiritualidad", size: "1.2 MB", url: "#" },
+            { id: 8, title: "Economía Agraria en Al-Andalus", category: "Historia", size: "3.5 MB", url: "#" },
+        ];
+
+        const BLOG_ARTICLES = [
+            { id: 1, title: "Javier Morillo: Legado Islámico en Alcalá", category: "Patrimonio", date: "28 Ene 2025", author: "Redacción", excerpt: "La importancia de dar voz a ciertos fragmentos de nuestro pasado...", image: "https://images.unsplash.com/photo-1569408035222-b9247321685a?q=80&w=600", content: `<p>Antes de empezar...</p>` },
+            { id: 2, title: "Mezquita Mayor de Granada", category: "Historia", date: "29 Dic 2024", author: "Admin", excerpt: "Un legado vivo del arte andalusí. Historia y contexto...", image: "https://images.unsplash.com/photo-1628103986064-a639b752254d?q=80&w=600", content: `<p>La Mezquita Mayor...</p>` },
+            { id: 3, title: "Gaida Mohamed: Mujer y el Islam", category: "Comunidad", date: "24 Dic 2024", author: "Gaida Mohamed", excerpt: "El papel de la mujer en el Islam: Mi visión y experiencia...", image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600", content: `<p>Mi Experiencia...</p>` }
+        ];
+
+        // --- COMPONENTES VISUALES ---
         const PRAYER_THEMES = {
-          Fajr: {
-            gradient: 'linear-gradient(180deg, rgba(255, 11, 0, 1) 13%, rgba(255, 158, 0, 1) 100%)',
-            sunColor: '#ffffff', mountainColor: '#484848', astroStyle: { top: 'auto', bottom: '120px', right: '15%' } 
-          },
-          Shurooq: {
-            gradient: 'linear-gradient(180deg, #FF512F 0%, #F09819 100%)',
-            sunColor: '#FFD700', mountainColor: '#5D4037', astroStyle: { top: '30%', right: '10%' }
-          },
-          Dhuhr: {
-            gradient: 'linear-gradient(180deg, #2980B9 0%, #6DD5FA 100%)',
-            sunColor: '#FFFACD', mountainColor: '#2C3E50', astroStyle: { top: '10%', right: '10%' }
-          },
-          Asr: {
-            gradient: 'linear-gradient(180deg, #00c6ff 0%, #0072ff 100%)',
-            sunColor: '#FFFEEO', mountainColor: '#6a85b6', astroStyle: { top: '15%', right: '20%' }
-          },
-          Maghrib: {
-            gradient: 'linear-gradient(180deg, #6441A5 0%, #2a0845 100%)',
-            sunColor: '#ff9966', mountainColor: '#1a1a1d', astroStyle: { top: 'auto', bottom: '100px', right: '15%' }
-          },
-          Isha: {
-            gradient: 'linear-gradient(180deg, #000428 0%, #004e92 100%)',
-            sunColor: '#F4F6F0', mountainColor: '#000000', astroStyle: { top: '15%', right: '15%' }
-          }
+          Fajr: { gradient: 'linear-gradient(180deg, rgba(255, 11, 0, 1) 13%, rgba(255, 158, 0, 1) 100%)', sunColor: '#ffffff', mountainColor: '#484848', astroStyle: { top: 'auto', bottom: '120px', right: '15%' } },
+          Shurooq: { gradient: 'linear-gradient(180deg, #FF512F 0%, #F09819 100%)', sunColor: '#FFD700', mountainColor: '#5D4037', astroStyle: { top: '30%', right: '10%' } },
+          Dhuhr: { gradient: 'linear-gradient(180deg, #2980B9 0%, #6DD5FA 100%)', sunColor: '#FFFACD', mountainColor: '#2C3E50', astroStyle: { top: '10%', right: '10%' } },
+          Asr: { gradient: 'linear-gradient(180deg, #00c6ff 0%, #0072ff 100%)', sunColor: '#FFFEEO', mountainColor: '#6a85b6', astroStyle: { top: '15%', right: '20%' } },
+          Maghrib: { gradient: 'linear-gradient(180deg, #6441A5 0%, #2a0845 100%)', sunColor: '#ff9966', mountainColor: '#1a1a1d', astroStyle: { top: 'auto', bottom: '100px', right: '15%' } },
+          Isha: { gradient: 'linear-gradient(180deg, #000428 0%, #004e92 100%)', sunColor: '#F4F6F0', mountainColor: '#000000', astroStyle: { top: '15%', right: '15%' } }
         };
 
-        // --- COMPONENTE: SKY BACKGROUND ---
         const SkyBackground = ({ theme }) => {
             return (
                 <div className="absolute inset-0 w-full h-full overflow-hidden">
                     <AnimatePresence mode="popLayout">
-                        <motion.div
-                            key={theme.gradient}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 1.5 }}
-                            className="absolute inset-0 w-full h-full"
-                            style={{ background: theme.gradient }}
-                        />
+                        <motion.div key={theme.gradient} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.5 }} className="absolute inset-0 w-full h-full" style={{ background: theme.gradient }} />
                     </AnimatePresence>
                     <div className="absolute -top-12 -right-12 w-56 h-56 rounded-full bg-white/10 blur-3xl z-0"></div>
-                    <div className="absolute top-10 right-10 w-24 h-24 rounded-full bg-white/20 blur-2xl z-0"></div>
-                    <motion.div 
-                        layoutId="astro"
-                        initial={false}
-                        animate={{ backgroundColor: theme.sunColor, ...theme.astroStyle }}
-                        transition={{ duration: 1.5, type: "spring", bounce: 0.2 }}
-                        className="absolute w-20 h-20 rounded-full shadow-[0_0_50px_rgba(255,255,255,0.8)] z-10"
-                    ></motion.div>
+                    <motion.div layoutId="astro" initial={false} animate={{ backgroundColor: theme.sunColor, ...theme.astroStyle }} transition={{ duration: 1.5, type: "spring", bounce: 0.2 }} className="absolute w-20 h-20 rounded-full shadow-[0_0_50px_rgba(255,255,255,0.8)] z-10"></motion.div>
                     <div className="absolute bottom-[-100px] left-[-50px] w-64 h-64 transform rotate-45 shadow-2xl transition-colors duration-1000" style={{ backgroundColor: theme.mountainColor, zIndex: 15 }}></div>
-                    <div className="absolute bottom-[-120px] left-[80px] w-80 h-80 transform rotate-45 shadow-2xl opacity-80 transition-colors duration-1000" style={{ backgroundColor: theme.mountainColor, zIndex: 16, filter: 'brightness(1.2)' }}></div>
+                    <div className="absolute bottom-[-120px] left-[-50px] w-80 h-80 transform rotate-45 shadow-2xl opacity-80 transition-colors duration-1000" style={{ backgroundColor: theme.mountainColor, zIndex: 16, filter: 'brightness(1.2)' }}></div>
                     <div className="absolute bottom-[-150px] right-[-50px] w-96 h-96 transform rotate-45 shadow-2xl opacity-60 transition-colors duration-1000" style={{ backgroundColor: theme.mountainColor, zIndex: 14 }}></div>
                 </div>
             );
         };
 
-        // --- COMPONENTE: COUNTDOWN RAMADÁN ---
-        const RamadanCountdown = () => {
-            const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
-
-            useEffect(() => {
-                const target = new Date('2026-02-17T00:00:00');
-                const interval = setInterval(() => {
-                    const now = new Date();
-                    const diff = target - now;
-                    if (diff > 0) {
-                        setTimeLeft({
-                            d: Math.floor(diff / (1000 * 60 * 60 * 24)),
-                            h: Math.floor((diff / (1000 * 60 * 60)) % 24),
-                            m: Math.floor((diff / 1000 / 60) % 60),
-                            s: Math.floor((diff / 1000) % 60)
-                        });
-                    }
-                }, 1000);
-                return () => clearInterval(interval);
-            }, []);
-
-            return (
-                <div className="flex gap-6 md:gap-12 justify-center mt-12 relative z-50">
-                    {['d', 'h', 'm', 's'].map((unit, i) => (
-                        <div key={i} className="text-center">
-                            <span className="block text-4xl md:text-6xl font-bold font-mono text-white drop-shadow-lg" 
-                                  style={{ color: unit === 's' || unit === 'd' ? C.gold : 'white' }}>
-                                {String(timeLeft[unit]).padStart(2, '0')}
-                            </span>
-                            <span className="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold block mt-2">
-                                {{d:'Días', h:'Horas', m:'Min', s:'Seg'}[unit]}
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            );
-        };
-
-        // --- COMPONENTE: NAVBAR ---
-        const Navbar = () => {
+        const Navbar = ({ onNavigate }) => {
             const [scrolled, setScrolled] = useState(false);
             const [menuOpen, setMenuOpen] = useState(false);
-
             useEffect(() => {
                 const handleScroll = () => setScrolled(window.scrollY > 50);
                 window.addEventListener('scroll', handleScroll);
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
-
             return (
-                <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur shadow-md py-4' : 'bg-transparent py-8'}`}>
+                <nav className={`fixed w-full z-[100] transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur shadow-md py-4' : 'bg-transparent py-8'}`}>
                     <div className="container mx-auto px-6 flex justify-between items-center">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 border-2 flex items-center justify-center font-serif text-xl" 
-                                 style={{ borderColor: scrolled ? C.black : 'white', color: scrolled ? C.black : 'white' }}>M</div>
-                            <div className="flex flex-col">
-                                <span className="text-sm font-bold tracking-[0.2em]" style={{ color: scrolled ? C.black : 'white' }}>MEZQUITA</span>
-                                <span className="text-xs tracking-[0.3em]" style={{ color: scrolled ? C.gold : '#ccc' }}>GUADAÍRA</span>
-                            </div>
+                        <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
+                            <div className="w-10 h-10 border-2 flex items-center justify-center font-serif text-xl" style={{ borderColor: scrolled ? C.black : 'white', color: scrolled ? C.black : 'white' }}>M</div>
+                            <div className="flex flex-col"><span className="text-sm font-bold tracking-[0.2em]" style={{ color: scrolled ? C.black : 'white' }}>MEZQUITA</span><span className="text-xs tracking-[0.3em]" style={{ color: scrolled ? C.gold : '#ccc' }}>GUADAÍRA</span></div>
                         </div>
-
                         <div className={`hidden md:flex gap-8 text-sm font-bold tracking-widest ${scrolled ? 'text-gray-800' : 'text-white'}`}>
-                            {['Inicio', 'Horarios', 'Actividades', 'Zakat'].map(item => (
-                                <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-[#cda434] transition-colors">{item.toUpperCase()}</a>
-                            ))}
+                            {['Inicio', 'Nosotros', 'Descubre', 'Blog', 'Horarios', 'Biblioteca', 'Zakat'].map(item => (<a key={item} href={`#${item.toLowerCase()}`} onClick={() => onNavigate('home')} className="hover:text-[#cda434] transition-colors">{item.toUpperCase()}</a>))}
                             <a href="#contacto" className="px-6 py-2 border border-[#cda434] text-[#cda434] rounded-full hover:bg-[#cda434] hover:text-white transition-all">DONAR</a>
                         </div>
-
-                        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-                            <Icon name={menuOpen ? "x" : "menu"} className={scrolled ? "text-black" : "text-white"} />
-                        </button>
+                        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}><Icon name={menuOpen ? "x" : "menu"} className={scrolled ? "text-black" : "text-white"} /></button>
                     </div>
-                    
-                    {menuOpen && (
-                        <div className="absolute top-full left-0 w-full bg-white shadow-xl p-6 flex flex-col gap-4 text-center md:hidden">
-                            {['Inicio', 'Horarios', 'Actividades', 'Zakat', 'Contacto'].map(item => (
-                                <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="text-gray-800 font-bold py-2 border-b border-gray-100">{item}</a>
-                            ))}
-                        </div>
-                    )}
+                    {menuOpen && (<div className="absolute top-full left-0 w-full bg-white shadow-xl p-6 flex flex-col gap-4 text-center md:hidden">{['Inicio', 'Nosotros', 'Descubre', 'Blog', 'Horarios', 'Biblioteca', 'Zakat', 'Contacto'].map(item => (<a key={item} href={`#${item.toLowerCase()}`} onClick={() => { setMenuOpen(false); onNavigate('home'); }} className="text-gray-800 font-bold py-2 border-b border-gray-100">{item}</a>))}</div>)}
                 </nav>
             );
         };
 
-        // --- COMPONENTE: HERO ---
         const Hero = () => (
             <header id="inicio" className="relative h-screen flex items-center justify-center overflow-hidden bg-[#111]">
-                <div className="absolute inset-0 opacity-40">
-                    <img src="https://images.unsplash.com/photo-1519817650390-64a93db51149?q=80&w=1920" className="w-full h-full object-cover grayscale" alt="Background" />
-                </div>
+                <div className="absolute inset-0 opacity-40"><img src="https://images.unsplash.com/photo-1519817650390-64a93db51149?q=80&w=1920" className="w-full h-full object-cover grayscale" alt="Background" /></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/80"></div>
-                
                 <div className="relative z-10 text-center px-4 w-full">
                     <motion.div initial={{y: 50, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{duration: 1}}>
                         <p className="text-xs md:text-sm font-bold tracking-[0.4em] text-[#cda434] mb-4 uppercase">Primera Comunidad de Alcalá</p>
-                        <h1 className="text-5xl md:text-8xl font-thin text-white mb-6 leading-tight">
-                            Mezquita <br/><span className="font-bold">Guadaíra</span>
-                        </h1>
+                        <h1 className="text-5xl md:text-8xl font-thin text-white mb-6 leading-tight">Mezquita <br/><span className="font-bold">Guadaíra</span></h1>
                         <div className="w-24 h-1 bg-white/20 mx-auto mb-10"></div>
+                        <p className="text-white/80 text-lg font-light tracking-wide">Un hogar espiritual para todos</p>
                     </motion.div>
-                    
-                    <RamadanCountdown />
-                    
-                    <p className="text-white/50 text-xs uppercase tracking-[0.3em] mt-8">Cuenta atrás para Ramadán</p>
                 </div>
             </header>
         );
 
-        // --- COMPONENTE: HORARIOS VISUALES ---
+        const AboutUs = () => (
+            <section id="nosotros" className="py-24 bg-white relative overflow-hidden">
+                <div className="container mx-auto px-6">
+                    <div className="grid md:grid-cols-2 gap-16 items-center">
+                        <div className="relative z-10">
+                            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400 mb-4 block">Nuestra Identidad</span>
+                            <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-8 leading-tight">Un refugio de paz en <br/><span className="font-serif italic font-amiri text-[#cda434]">Alcalá de Guadaíra</span></h2>
+                            <p className="text-gray-600 leading-relaxed mb-6 font-light text-lg">Somos la primera comunidad islámica oficial de la ciudad. Nacimos con la vocación de ser un puente entre culturas y un hogar espiritual para los musulmanes de Alcalá.</p>
+                            <p className="text-gray-600 leading-relaxed mb-8 font-light text-lg">Más que un lugar de oración, somos un centro de vida: educación para nuestros hijos, apoyo para los necesitados y un espacio abierto al diálogo y la convivencia con nuestros vecinos.</p>
+                        </div>
+                        <div className="relative"><div className="aspect-[4/5] bg-gray-100 rounded-2xl overflow-hidden relative shadow-2xl"><img src="https://images.unsplash.com/photo-1580212879558-795240c75462?q=80&w=1000" alt="Interior Mezquita" className="w-full h-full object-cover grayscale opacity-90 hover:scale-105 transition-transform duration-700"/><div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div></div></div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        // --- COMPONENTE: DESCUBRE EL ISLAM (PARALLAX + LUNA 3D RECREADA) ---
+        const DiscoverIslam = () => {
+            const [activeTab, setActiveTab] = useState('curiosity'); 
+            const x = useMotionValue(0);
+            const y = useMotionValue(0);
+
+            const handleMouseMove = (e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                x.set(e.clientX - rect.left - rect.width / 2);
+                y.set(e.clientY - rect.top - rect.height / 2);
+            };
+            
+            // Generar estrellas una sola vez
+            const stars = useMemo(() => Array.from({ length: 120 }).map((_, i) => ({
+                left: Math.random() * 100 + '%',
+                top: Math.random() * 85 + '%',
+                size: Math.random() * 2.5 + 'px',
+                delay: Math.random() * 5 + 's'
+            })), []);
+
+            return (
+                <section 
+                    id="descubre" 
+                    className="relative min-h-screen py-32 overflow-hidden flex items-center justify-center"
+                    onMouseMove={handleMouseMove}
+                >
+                    {/* FONDO PARALLAX (Tus Capas) */}
+                    <div className="parallax-scene">
+                        {/* 1. Estrellas */}
+                        <motion.div className="absolute inset-0 w-[120%] h-[120%] -left-[10%] -top-[10%]" style={{ x: useTransform(x, v => v * 0.02), y: useTransform(y, v => v * 0.02) }}>
+                            {stars.map((s, i) => (
+                                <div key={i} className="star" style={{left: s.left, top: s.top, width: s.size, height: s.size, animationDelay: s.delay}}></div>
+                            ))}
+                        </motion.div>
+
+                        {/* 2. LUNA 3D (SVG + MASK + GRADIENT) - Movimiento invertido */}
+                        <motion.div className="absolute top-[15%] right-[10%] lg:right-[15%] z-0" style={{ x: useTransform(x, v => v * -0.04), y: useTransform(y, v => v * -0.04) }}>
+                             <div className="moon-svg-wrapper">
+                                <svg viewBox="0 0 100 100" style={{transform: 'rotate(-25deg)', width: '100%', height: '100%'}}>
+                                    <defs>
+                                        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style={{stopColor:'#FFF8DC'}}/>
+                                            <stop offset="100%" style={{stopColor:'#FFD700'}}/>
+                                        </linearGradient>
+                                        <mask id="moonCutout">
+                                            <rect x="0" y="0" width="100" height="100" fill="white"/>
+                                            <circle cx="35" cy="40" r="35" fill="black"/>
+                                        </mask>
+                                    </defs>
+                                    <circle cx="50" cy="50" r="40" fill="url(#goldGrad)" mask="url(#moonCutout)" />
+                                </svg>
+                             </div>
+                        </motion.div>
+
+                        {/* 3. Niebla */}
+                        <motion.div className="absolute inset-0 mist-layer w-full h-full pointer-events-none" style={{ x: useTransform(x, v => v * 0.08) }}></motion.div>
+
+                        {/* 4. Suelo (Colinas + Silueta) */}
+                        <motion.div className="absolute bottom-[-5vh] left-0 w-full flex items-end justify-center pointer-events-none z-0" style={{ x: useTransform(x, v => v * 0.10) }}>
+                            <svg viewBox="0 0 1000 200" preserveAspectRatio="none" className="w-[110vw] h-auto max-h-[35vh] min-w-[1200px]" style={{fill: '#050810'}}>
+                                <path d="M0,200 L0,100 Q300,50 500,80 Q700,110 1000,60 L1000,200 Z" />
+                            </svg>
+                             {/* Castillo Silueta simple superpuesta */}
+                             <div className="absolute bottom-[20%] left-[15%] w-[150px] h-[30px] bg-[#05160d] opacity-80" style={{clipPath: 'polygon(0% 100%, 10% 100%, 10% 60%, 20% 60%, 20% 100%, 30% 100%, 30% 50%, 40% 50%, 40% 100%, 50% 100%, 50% 30%, 70% 30%, 70% 100%, 100% 100%)'}}></div>
+                        </motion.div>
+
+                        {/* Viñeta */}
+                        <div className="vignette"></div>
+                    </div>
+
+                    {/* CONTENIDO (FLOTANDO SOBRE LA ESCENA) */}
+                    <div className="container mx-auto px-6 relative z-20">
+                        <div className="text-center mb-12">
+                            <motion.span initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#cda434] mb-2 block">Bienvenida y Orientación</motion.span>
+                            <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl font-serif font-amiri text-white drop-shadow-lg">Descubre el Islam</motion.h2>
+                        </div>
+                        <div className="flex justify-center mb-16 gap-6"><button onClick={() => setActiveTab('curiosity')} className={`px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'curiosity' ? 'bg-[#cda434] text-black shadow-[0_0_20px_rgba(205,164,52,0.4)]' : 'border border-white/20 text-gray-400 hover:text-white hover:border-white'}`}>¿Tienes Curiosidad?</button><button onClick={() => setActiveTab('newMuslim')} className={`px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'newMuslim' ? 'bg-[#cda434] text-black shadow-[0_0_20px_rgba(205,164,52,0.4)]' : 'border border-white/20 text-gray-400 hover:text-white hover:border-white'}`}>Soy Nuevo Musulmán</button></div>
+                        <div className="max-w-5xl mx-auto bg-white/5 backdrop-blur-xl rounded-3xl p-10 md:p-16 border border-white/10 shadow-2xl relative overflow-hidden">
+                            <AnimatePresence mode="wait">
+                                {activeTab === 'curiosity' ? (
+                                    <motion.div key="curiosity" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.4 }} className="grid md:grid-cols-2 gap-12 items-center"><div><h3 className="text-3xl font-bold mb-6 text-white font-amiri">Más allá de lo que ves en la tele</h3><p className="text-gray-300 mb-8 leading-relaxed font-light text-lg">El Islam es paz, justicia y conexión con el Creador. En Alcalá somos tus vecinos, tus compañeros de trabajo y amigos. Te invitamos a conocernos sin filtros.</p><ul className="space-y-4 mb-10"><li className="flex items-center gap-4 text-sm text-gray-200"><div className="w-6 h-6 rounded-full bg-[#cda434]/20 flex items-center justify-center text-[#cda434]"><Icon name="check" size={14} /></div> Dios es Uno y Único (Tawhid).</li><li className="flex items-center gap-4 text-sm text-gray-200"><div className="w-6 h-6 rounded-full bg-[#cda434]/20 flex items-center justify-center text-[#cda434]"><Icon name="check" size={14} /></div> Respeto a Jesús, Moisés y todos los profetas.</li><li className="flex items-center gap-4 text-sm text-gray-200"><div className="w-6 h-6 rounded-full bg-[#cda434]/20 flex items-center justify-center text-[#cda434]"><Icon name="check" size={14} /></div> Ciencia y Fe van de la mano.</li></ul><a href="#contacto" className="inline-block bg-white text-black px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#cda434] transition-all hover:scale-105 shadow-lg">Ven a tomar un té</a></div><div className="bg-black/40 p-8 rounded-2xl border border-white/5 text-center relative overflow-hidden group"><div className="absolute inset-0 bg-[#cda434]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div><Icon name="help-circle" size={64} className="text-[#cda434] mx-auto mb-6 opacity-80" /><h4 className="text-xl font-bold mb-3 text-white">¿Tienes dudas?</h4><p className="text-sm text-gray-400 mb-8 font-light">Escríbenos por WhatsApp con total confianza.</p><a href="https://wa.me/34600000000" className="inline-flex items-center gap-2 text-[#cda434] text-sm font-bold hover:text-white transition-colors">Chatear ahora <Icon name="arrow-right" size={16} /></a></div></motion.div>
+                                ) : (
+                                    <motion.div key="newMuslim" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.4 }}><div className="text-center mb-12"><span className="text-[#cda434] text-2xl font-serif block mb-3 font-amiri">¡As-Salamu Alaykum!</span><h3 className="text-4xl font-bold text-white">Bienvenido a casa, hermano/a</h3><p className="text-gray-400 mt-6 max-w-2xl mx-auto font-light text-lg">Has dado el paso más importante de tu vida. No estás solo en este camino. Aquí tienes los primeros pasos para empezar con firmeza.</p></div><div className="grid md:grid-cols-3 gap-8"><div className="bg-[#2c2c2c] p-8 rounded-2xl hover:-translate-y-2 transition-transform border border-gray-700 hover:border-gray-500"><Icon name="droplet" size={40} className="text-blue-400 mb-6" /><h4 className="font-bold text-lg mb-3 text-white">1. La Purificación</h4><p className="text-sm text-gray-400 leading-relaxed">Aprende a hacer el Ghusl y el Wudu.</p></div><div className="bg-[#2c2c2c] p-8 rounded-2xl hover:-translate-y-2 transition-transform border border-gray-700 hover:border-[#cda434] group"><Icon name="moon" size={40} className="text-[#cda434] mb-6 group-hover:scale-110 transition-transform" /><h4 className="font-bold text-lg mb-3 text-white">2. El Salat</h4><p className="text-sm text-gray-400 leading-relaxed">Tu conexión diaria con Allah.</p></div><div className="bg-[#2c2c2c] p-8 rounded-2xl hover:-translate-y-2 transition-transform border border-gray-700 hover:border-green-500"><Icon name="users" size={40} className="text-green-400 mb-6" /><h4 className="font-bold text-lg mb-3 text-white">3. Tu Comunidad</h4><p className="text-sm text-gray-400 leading-relaxed">Ven los viernes. Conoce gente.</p></div></div><div className="text-center mt-12"><button className="bg-[#cda434] text-black px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors shadow-[0_0_30px_rgba(205,164,52,0.3)]">Descargar "Kit de Bienvenida" (PDF)</button></div></motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const BlogSection = ({ onReadArticle }) => (
+            <section id="blog" className="py-24 bg-[#f2f2f2]"><div className="container mx-auto px-6"><div className="text-center mb-16"><span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400">Actualidad</span><h2 className="text-3xl font-light text-gray-900 mt-4">Últimas <span className="font-bold">Noticias</span></h2></div><div className="grid md:grid-cols-3 gap-8">{BLOG_ARTICLES.map((article) => (<motion.div key={article.id} whileHover={{ y: -5 }} onClick={() => onReadArticle(article)} className="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 group cursor-pointer"><div className="h-48 overflow-hidden relative"><img src={article.image} alt={article.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" /><div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider text-[#cda434]">{article.category}</div></div><div className="p-8"><span className="text-xs text-gray-400 font-medium mb-2 block">{article.date}</span><h3 className="text-xl font-bold text-gray-800 mb-3 leading-tight group-hover:text-[#cda434] transition-colors">{article.title}</h3><p className="text-gray-500 text-sm leading-relaxed mb-6">{article.excerpt}</p><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-800 group-hover:text-[#cda434] transition-colors">Leer Artículo <Icon name="arrow-right" size={14} /></div></div></motion.div>))}</div><div className="text-center mt-12"><a href="#" className="inline-block px-8 py-3 border border-gray-300 rounded-full text-xs font-bold uppercase tracking-widest text-gray-500 hover:bg-[#1a1a1a] hover:text-white transition-all">Ver Todo el Blog</a></div></div></section>
+        );
+
+        const ArticleView = ({ article, onBack }) => {
+            useEffect(() => { window.scrollTo(0, 0); }, []);
+            return (
+                <div className="min-h-screen bg-white"><div className="relative h-[400px] bg-black"><img src={article.image} className="w-full h-full object-cover opacity-50" /><div className="absolute inset-0 flex flex-col justify-center items-center text-white p-6 text-center"><span className="text-[#cda434] font-bold tracking-widest uppercase text-xs mb-4">{article.category}</span><h1 className="text-4xl md:text-5xl font-bold font-serif mb-6">{article.title}</h1><div className="flex items-center gap-4 text-sm opacity-80"><span>{article.date}</span><span>•</span><span>Por {article.author || 'Redacción'}</span></div></div></div><div className="max-w-3xl mx-auto px-6 py-16"><button onClick={onBack} className="flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-[#cda434] mb-8 transition-colors"><Icon name="arrow-left" size={16} /> VOLVER AL INICIO</button><div className="prose prose-lg text-gray-700" dangerouslySetInnerHTML={{ __html: article.content }}></div><div className="mt-16 pt-8 border-t border-gray-100 text-center"><p className="text-sm text-gray-400 italic">Comparte este artículo con tu comunidad</p></div></div></div>
+            );
+        };
+
         const PrayerSection = () => {
             const [active, setActive] = useState(0); 
             const [nextPrayerIndex, setNextPrayerIndex] = useState(null);
             const [timeLeft, setTimeLeft] = useState('');
             const [currentTimeStr, setCurrentTimeStr] = useState('');
 
-            // 1. Detectar siguiente rezo al cargar
             useEffect(() => {
                 const now = new Date();
                 const currentMins = now.getHours() * 60 + now.getMinutes();
                 setCurrentTimeStr(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
                 let found = -1;
-
                 for(let i=0; i<PRAYER_TIMES.length; i++) {
                     const p = PRAYER_TIMES[i];
                     if (p.name !== 'Shurooq') {
                         const [h, m] = p.time.split(':').map(Number);
-                        if ((h*60 + m) > currentMins) {
-                            found = i; break;
-                        }
+                        if ((h*60 + m) > currentMins) { found = i; break; }
                     }
                 }
-                const idx = found === -1 ? 0 : found; // Si es tarde, el sig es Fajr
-                setActive(idx);
-                setNextPrayerIndex(idx);
+                const idx = found === -1 ? 0 : found; 
+                setActive(idx); setNextPrayerIndex(idx);
             }, []);
 
-            // 2. Cronómetro en tiempo real para el rezo ACTIVO
             useEffect(() => {
                 const timer = setInterval(() => {
                     const now = new Date();
                     const p = PRAYER_TIMES[active];
                     const [h, m] = p.time.split(':').map(Number);
-                    let target = new Date();
-                    target.setHours(h, m, 0, 0);
-
-                    // Si ya pasó la hora, es para mañana
-                    if (target <= now) {
-                        target.setDate(target.getDate() + 1);
-                    }
-
+                    let target = new Date(); target.setHours(h, m, 0, 0);
+                    if (target <= now) target.setDate(target.getDate() + 1);
                     const diff = target - now;
                     const hh = Math.floor(diff / 3600000);
                     const mm = Math.floor((diff % 3600000) / 60000);
                     const ss = Math.floor((diff % 60000) / 1000);
-                    
                     setTimeLeft(`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`);
                 }, 1000);
                 return () => clearInterval(timer);
@@ -294,120 +370,23 @@
             const currentTheme = active !== null ? PRAYER_THEMES[PRAYER_TIMES[active].name] : PRAYER_THEMES.Fajr;
 
             return (
-                <section id="horarios" className="py-24 bg-white">
+                <section id="horarios" className="py-24 bg-white border-t border-gray-100">
                     <div className="container mx-auto px-6">
-                        
-                        {/* --- TEXTO INTRODUCTORIO DEL SALAT (RECUPERADO) --- */}
                         <div className="grid lg:grid-cols-2 gap-12 items-start mb-20">
-                          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400 flex items-center gap-2 mb-4">
-                              <span className="w-8 h-[1px] bg-[#cda434]"></span> El Pilar de la Fe
-                            </span>
-                            <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-6 leading-tight">
-                              El Salat: <span className="font-serif italic font-amiri text-black">Nuestra Conexión con Allah</span>
-                            </h2>
-                            <div className="prose prose-lg text-gray-500 font-light leading-relaxed">
-                              <p className="mb-4">
-                                El Salat no es solo una obligación, es el momento donde el alma respira. Es nuestra conexión directa con el Creador, cinco veces al día, para recordar nuestro propósito y encontrar paz en medio del caos.
-                              </p>
-                              <p>
-                                Es la columna vertebral de nuestra fe y el refugio para nuestras almas. Ven a la mezquita y vive la experiencia de la oración en comunidad.
-                              </p>
-                            </div>
-                          </motion.div>
-
-                          <motion.div 
-                            initial={{ opacity: 0, x: 20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                            viewport={{ once: true }}
-                            className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 relative group overflow-hidden"
-                          >
-                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                              <Icon name="book-open" size={100} />
-                            </div>
-                            
-                            <div className="relative z-10">
-                              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-3">
-                                <Icon name="play-circle" className="text-[#cda434]" size={28} />
-                                ¿Cómo realizar el Salat?
-                              </h3>
-                              <p className="text-gray-500 mb-6 text-sm leading-relaxed">
-                                Aquí os dejamos un vídeo-tutorial donde explicamos paso a paso el proceso del Salat (Oración) según la Sunnah. Ideal para principiantes.
-                              </p>
-                              <a href="#" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white bg-[#2c2c2c] px-6 py-3 rounded-lg hover:bg-[#cda434] transition-colors shadow-lg">
-                                Ver Vídeo Tutorial <Icon name="arrow-right" size={14} />
-                              </a>
-                            </div>
-                          </motion.div>
+                          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400 flex items-center gap-2 mb-4"><span className="w-8 h-[1px] bg-[#cda434]"></span> El Pilar de la Fe</span><h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-6 leading-tight">El Salat: <span className="font-serif italic font-amiri text-black">Nuestra Conexión con Allah</span></h2><div className="prose prose-lg text-gray-500 font-light leading-relaxed"><p className="mb-4">El Salat no es solo una obligación, es el momento donde el alma respira. Es nuestra conexión directa con el Creador.</p></div></motion.div>
+                          <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true }} className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 relative group overflow-hidden"><div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><Icon name="book-open" size={100} /></div><div className="relative z-10"><h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-3"><Icon name="play-circle" className="text-[#cda434]" size={28} /> ¿Cómo realizar el Salat?</h3><p className="text-gray-500 mb-6 text-sm leading-relaxed">Aquí os dejamos un vídeo-tutorial donde explicamos paso a paso el proceso del Salat según la Sunnah.</p><a href="#" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white bg-[#2c2c2c] px-6 py-3 rounded-lg hover:bg-[#cda434] transition-colors shadow-lg">Ver Vídeo Tutorial <Icon name="arrow-right" size={14} /></a></div></motion.div>
                         </div>
-                        
                         <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-gray-300 to-transparent mb-16 opacity-50"></div>
-                        
-                        <div className="text-center mb-16">
-                            <h2 className="text-3xl font-light text-gray-900">Horarios de <span className="font-bold">Oración</span></h2>
-                            <p className="text-gray-400 text-sm mt-2 tracking-widest uppercase flex items-center justify-center gap-2">
-                                <Icon name="clock" size={14} className="text-[#cda434]" /> 
-                                {new Date().toLocaleDateString()} | Hora: {currentTimeStr}
-                            </p>
-                        </div>
-
+                        <div className="text-center mb-16"><h2 className="text-3xl font-light text-gray-900">Horarios de <span className="font-bold">Oración</span></h2><p className="text-gray-400 text-sm mt-2 tracking-widest uppercase">Alcalá de Guadaíra</p></div>
                         <div className="grid md:grid-cols-2 gap-12 items-center">
-                            {/* Tarjeta Visual Grande */}
-                            <div className="relative h-[450px] rounded-2xl overflow-hidden shadow-2xl bg-black group">
-                                <SkyBackground theme={currentTheme} />
-                                
-                                {/* Texto Sobrepuesto */}
-                                <div className="absolute bottom-0 left-0 p-10 text-white z-30 w-full">
-                                    <span className="bg-black/20 backdrop-blur px-3 py-1 rounded text-xs font-bold uppercase tracking-wider mb-2 inline-block">Visualizando</span>
-                                    <div className="flex justify-between items-end">
-                                        <div>
-                                            <h3 className="text-6xl font-serif mt-2 font-amiri drop-shadow-lg">{PRAYER_TIMES[active].name}</h3>
-                                            <p className="text-4xl font-light opacity-90 drop-shadow-md">{PRAYER_TIMES[active].time}</p>
-                                        </div>
-                                        <div className="text-right hidden sm:block">
-                                            <p className="text-xs uppercase tracking-widest opacity-80 mb-1">
-                                                {active === nextPrayerIndex ? 'Tiempo para el Adhan' : 'Faltan para este rezo'}
-                                            </p>
-                                            <p className="text-2xl font-mono font-bold flex items-center justify-end gap-2">
-                                                <Icon name="clock" size={20} /> {timeLeft}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Lista de Rezos */}
+                            <div className="relative h-[450px] rounded-2xl overflow-hidden shadow-2xl bg-black group"><SkyBackground theme={currentTheme} /><div className="absolute bottom-0 left-0 p-10 text-white z-30 w-full"><span className="bg-black/20 backdrop-blur px-3 py-1 rounded text-xs font-bold uppercase tracking-wider mb-2 inline-block">Visualizando</span><div className="flex justify-between items-end"><div><h3 className="text-6xl font-serif mt-2 font-amiri drop-shadow-lg">{PRAYER_TIMES[active].name}</h3><p className="text-4xl font-light opacity-90 drop-shadow-md">{PRAYER_TIMES[active].time}</p></div><div className="text-right hidden sm:block"><p className="text-xs uppercase tracking-widest opacity-80 mb-1">{active === nextPrayerIndex ? 'Tiempo para el Adhan' : 'Faltan para este rezo'}</p><p className="text-2xl font-mono font-bold flex items-center justify-end gap-2"><Icon name="clock" size={20} /> {timeLeft}</p></div></div></div></div>
                             <div className="space-y-3">
                                 {PRAYER_TIMES.map((p, i) => {
                                     const isNextReal = i === nextPrayerIndex;
                                     const isActive = active === i;
-                                    return (
-                                        <div key={i} 
-                                             onClick={() => setActive(i)}
-                                             className={`p-5 rounded-xl flex justify-between items-center cursor-pointer transition-all border
-                                                        ${isActive ? 'bg-[#1a1a1a] text-white border-[#1a1a1a] scale-105 shadow-xl' : 'bg-white hover:bg-gray-50 border-gray-100 text-gray-600'}`}>
-                                            <div className="flex items-center gap-4">
-                                                <Icon name={p.icon} size={20} className={isActive ? 'text-[#cda434]' : 'text-gray-400'} />
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-sm font-bold uppercase tracking-widest">{p.name}</span>
-                                                    
-                                                    {/* EL PUNTITO VERDE PULSANTE */}
-                                                    {isNextReal && (
-                                                        <span className="relative flex h-3 w-3">
-                                                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                                          <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <span className="text-xl font-light">{p.time}</span>
-                                        </div>
-                                    );
+                                    return (<div key={i} onClick={() => setActive(i)} className={`p-5 rounded-xl flex justify-between items-center cursor-pointer transition-all border ${isActive ? 'bg-[#1a1a1a] text-white border-[#1a1a1a] scale-105 shadow-xl' : 'bg-white hover:bg-gray-50 border-gray-100 text-gray-600'}`}><div className="flex items-center gap-4"><Icon name={p.icon} size={20} className={isActive ? 'text-[#cda434]' : 'text-gray-400'} /><div className="flex items-center gap-2"><span className="text-sm font-bold uppercase tracking-widest">{p.name}</span>{isNextReal && (<span className="relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span></span>)}</div></div><span className="text-xl font-light">{p.time}</span></div>);
                                 })}
-                                <div className="text-center pt-6">
-                                    <a href="#" className="inline-block text-xs font-bold uppercase tracking-widest text-white bg-[#cda434] px-6 py-3 rounded-full hover:bg-black transition-colors">Descargar Calendario PDF</a>
-                                </div>
+                                <div className="text-center pt-6"><a href="#" className="inline-block text-xs font-bold uppercase tracking-widest text-white bg-[#cda434] px-6 py-3 rounded-full hover:bg-black transition-colors">Descargar Calendario PDF</a></div>
                             </div>
                         </div>
                     </div>
@@ -415,140 +394,140 @@
             );
         };
 
-        // --- COMPONENTE: WISDOM ---
         const Wisdom = () => {
             const [idx, setIdx] = useState(0);
             return (
-                <section className="bg-[#f9f9f9] py-16">
-                    <div className="container mx-auto px-6 text-center max-w-3xl">
-                        <div className="text-4xl text-[#cda434] mb-4">❝</div>
-                        <h3 className="text-3xl font-amiri text-[#1a1a1a] mb-6">{HADITHS[idx].ar}</h3>
-                        <p className="text-gray-600 italic mb-4 text-lg">"{HADITHS[idx].es}"</p>
-                        <span className="text-xs font-bold uppercase tracking-widest text-[#cda434] block mb-8">{HADITHS[idx].ref}</span>
-                        <button onClick={() => setIdx((idx + 1) % HADITHS.length)} className="text-xs font-bold uppercase tracking-widest border border-gray-300 px-8 py-3 rounded-full hover:bg-black hover:text-white transition-all">Siguiente Consejo</button>
+                <section className="bg-[#f9f9f9] py-16"><div className="container mx-auto px-6 text-center max-w-3xl"><div className="text-4xl text-[#cda434] mb-4">❝</div><h3 className="text-3xl font-amiri text-[#1a1a1a] mb-6">{HADITHS[idx].ar}</h3><p className="text-gray-600 italic mb-4 text-lg">"{HADITHS[idx].es}"</p><span className="text-xs font-bold uppercase tracking-widest text-[#cda434] block mb-8">{HADITHS[idx].ref}</span><button onClick={() => setIdx((idx + 1) % HADITHS.length)} className="text-xs font-bold uppercase tracking-widest border border-gray-300 px-8 py-3 rounded-full hover:bg-black hover:text-white transition-all">Siguiente Consejo</button></div></section>
+            );
+        };
+
+        // --- DIGITAL LIBRARY (CON EFECTO 3D RESTAURADO) ---
+        const DigitalLibrary = () => {
+            const [filter, setFilter] = useState('Todos');
+            const [search, setSearch] = useState('');
+            const categories = ['Todos', ...new Set(LIBRARY_BOOKS.map(b => b.category))];
+            const filteredBooks = LIBRARY_BOOKS.filter(book => (filter === 'Todos' || book.category === filter) && book.title.toLowerCase().includes(search.toLowerCase()));
+
+            const getStyleClass = (cat) => {
+                switch(cat) {
+                    case 'Patrimonio': return 'style-patrimonio';
+                    case 'Historia': return 'style-historia';
+                    case 'Cultura': return 'style-cultura';
+                    case 'Espiritualidad': return 'style-espiritualidad';
+                    default: return 'style-patrimonio';
+                }
+            };
+
+            return (
+                <section id="biblioteca" className="py-24 bg-white">
+                    <div className="container mx-auto px-6">
+                        <div className="max-w-4xl mx-auto text-center mb-16"><span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400 block mb-4">Conocimiento y Sabiduría</span><h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-6">Biblioteca <span className="font-bold">Digital</span></h2><p className="text-gray-500 font-light text-lg leading-relaxed"><em>"El conocimiento es la luz del creyente."</em><br/>En esta biblioteca digital, compartimos el legado histórico, cultural y espiritual del Islam en Al-Ándalus y el mundo.</p></div>
+                        <div className="max-w-4xl mx-auto mb-16 flex flex-col md:flex-row gap-6 justify-between items-center"><div className="relative w-full md:w-auto flex-1"><Icon name="search" size={18} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" /><input type="text" placeholder="Buscar documento..." className="w-full pl-12 pr-4 py-3 bg-[#f8f8f8] border border-gray-200 rounded-full focus:outline-none focus:border-[#cda434] transition-colors text-sm" value={search} onChange={(e) => setSearch(e.target.value)} /></div><div className="flex flex-wrap gap-2 justify-center">{categories.map(cat => (<button key={cat} onClick={() => setFilter(cat)} className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${filter === cat ? 'bg-[#1a1a1a] text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>{cat}</button>))}</div></div>
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 justify-items-center">
+                            {filteredBooks.map(book => (
+                                <div key={book.id} className="book-container">
+                                    <div className="book-card">
+                                        <div className="book-inside">
+                                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Opciones</span>
+                                            <a href={book.url} target="_blank" className="w-full py-2 bg-[#2c2c2c] text-white rounded text-xs font-bold uppercase text-center hover:bg-[#cda434] transition-colors">Leer</a>
+                                            <a href={book.url} download className="w-full py-2 border border-gray-300 text-gray-600 rounded text-xs font-bold uppercase text-center hover:bg-gray-100 transition-colors">Descargar</a>
+                                            <span className="text-[10px] text-gray-400 mt-4">{book.size}</span>
+                                        </div>
+                                        <div className={`book-cover ${getStyleClass(book.category)}`}>
+                                            <div className="book-deco"></div>
+                                            <div className="book-pattern"></div>
+                                            <div className="relative z-10 flex flex-col h-full justify-between">
+                                                <div className="text-center pt-4">
+                                                    {book.category === 'Espiritualidad' && <div className="book-icon">۞</div>}
+                                                    <span className="text-[9px] uppercase tracking-widest opacity-80 block mb-2">{book.category}</span>
+                                                    <h3 className="book-title text-xl leading-tight">{book.title}</h3>
+                                                </div>
+                                                <div className="text-center pb-4"><span className="text-[10px] uppercase tracking-widest opacity-60">Mezquita Guadaíra</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </section>
             );
         };
 
-        // --- COMPONENTE: ZAKAT CALCULATOR ---
+        // --- HALAL GUIDE (CON HOVERS MEJORADOS Y VIDEO) ---
+        const HalalGuide = () => {
+            return (
+                <section id="guia-halal" className="py-24 bg-[#f2f2f2]">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center max-w-3xl mx-auto mb-16"><span className="text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400">Vida Diaria</span><h2 className="text-3xl md:text-4xl font-light text-gray-900 mt-4 mb-6">Guía Halal <span className="font-bold">Profesional</span></h2><p className="text-gray-500 font-light text-lg leading-relaxed">Descubre dónde comprar carne halal, restaurantes recomendados y servicios para la comunidad.</p></div>
+
+                        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+                            <div>
+                                <h3 className="text-2xl font-bold text-gray-900 mb-4">¿Qué es realmente el Halal?</h3>
+                                <p className="text-gray-600 mb-6 leading-relaxed">Halal (حلال) significa 'lícito' en árabe. No se trata solo de cómo se sacrifica el animal, sino de un estilo de vida ético, saludable y respetuoso con el bienestar animal y la higiene.</p>
+                                <a href="https://youtu.be/w4XJe-Db0II" target="_blank" className="inline-flex items-center gap-2 text-white bg-[#cda434] px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-[#b38f2d] transition-colors shadow-lg hover:shadow-xl hover:-translate-y-1 transform duration-300">
+                                    <Icon name="play-circle" size={16} /> Ver Vídeo Explicativo
+                                </a>
+                            </div>
+                            <div className="grid gap-4">
+                                <motion.div whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 transition-all group cursor-default hover:border-green-200">
+                                    <div className="p-3 bg-green-50 rounded-full text-green-600 group-hover:bg-green-100 transition-colors"><Icon name="heart" size={24} /></div>
+                                    <div><h4 className="font-bold text-sm text-gray-900 group-hover:text-green-700 transition-colors">Bienestar Animal</h4><p className="text-xs text-gray-500 mt-1">Trato ético y sacrificio sin sufrimiento innecesario.</p></div>
+                                </motion.div>
+                                <motion.div whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 transition-all group cursor-default hover:border-blue-200">
+                                    <div className="p-3 bg-blue-50 rounded-full text-blue-600 group-hover:bg-blue-100 transition-colors"><Icon name="shield" size={24} /></div>
+                                    <div><h4 className="font-bold text-sm text-gray-900 group-hover:text-blue-700 transition-colors">Higiene y Salud</h4><p className="text-xs text-gray-500 mt-1">Procesos limpios y alimentos libres de sustancias nocivas.</p></div>
+                                </motion.div>
+                                <motion.div whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 transition-all group cursor-default hover:border-yellow-200">
+                                    <div className="p-3 bg-yellow-50 rounded-full text-yellow-600 group-hover:bg-yellow-100 transition-colors"><Icon name="check" size={24} /></div>
+                                    <div><h4 className="font-bold text-sm text-gray-900 group-hover:text-yellow-700 transition-colors">Calidad Garantizada</h4><p className="text-xs text-gray-500 mt-1">Trazabilidad desde el origen hasta tu mesa.</p></div>
+                                </motion.div>
+                            </div>
+                        </div>
+
+                        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="relative w-full overflow-hidden rounded-2xl shadow-2xl border border-gray-200 bg-white">
+                            <div className="aspect-w-16 aspect-h-9 w-full h-[600px]"><iframe src="https://www.google.com/maps/d/u/4/embed?mid=1EftU_JMAdlCRFdM6hmP6iXyIcdZuMcs&ehbc=2E312F" width="100%" height="100%" style={{ border: 0 }} allowFullScreen="" loading="lazy" title="Guía Halal Alcalá de Guadaíra"></iframe></div>
+                            <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm p-4 border-t border-gray-100 flex justify-center gap-8 text-sm font-medium text-gray-600"><div className="flex items-center gap-2"><Icon name="shopping-bag" className="text-gray-800" size={16} /> Carnicerías</div><div className="flex items-center gap-2"><Icon name="utensils" className="text-gray-800" size={16} /> Restaurantes</div></div>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
         const ZakatCalc = () => {
             const [vals, setVals] = useState({ cash: '', gold: '', debt: '' });
             const [res, setRes] = useState(null);
             const [flipped, setFlipped] = useState(false);
             const calc = () => { const total = (Number(vals.cash) + Number(vals.gold)) - Number(vals.debt); setRes(total > 0 ? total * 0.025 : 0); setFlipped(false); setTimeout(() => setFlipped(true), 100); };
             return (
-                <section id="zakat" className="py-24 bg-[#f2f2f2]">
-                    <div className="container mx-auto px-6 text-center">
-                        <h2 className="text-3xl font-light text-gray-900 mb-2">Calculadora <span className="font-bold">Zakat</span></h2>
-                        <p className="text-gray-500 mb-12">Purifica tu riqueza con precisión.</p>
-
-                        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                            {/* Calculadora (Izquierda) */}
-                            <div className="md:col-span-2 bg-white p-10 rounded-2xl shadow-xl text-left border border-gray-200 relative z-10">
-                                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                                    <div>
-                                        <label className="text-xs font-bold text-gray-400 uppercase">Dinero (€)</label>
-                                        <input type="number" className="w-full p-3 bg-gray-50 border rounded-lg mt-2 font-mono text-lg outline-none focus:border-[#cda434] transition-colors"
-                                               onChange={e => setVals({...vals, cash: e.target.value})} placeholder="0" />
-                                    </div>
-                                    <div>
-                                        <label className="text-xs font-bold text-gray-400 uppercase">Oro (€)</label>
-                                        <input type="number" className="w-full p-3 bg-gray-50 border rounded-lg mt-2 font-mono text-lg outline-none focus:border-[#cda434] transition-colors"
-                                               onChange={e => setVals({...vals, gold: e.target.value})} placeholder="0" />
-                                    </div>
-                                </div>
-                                <div className="mb-8">
-                                    <label className="text-xs font-bold text-gray-400 uppercase">Deudas (-)</label>
-                                    <input type="number" className="w-full p-3 bg-gray-50 border rounded-lg mt-2 font-mono text-lg outline-none focus:border-[#cda434] transition-colors"
-                                           onChange={e => setVals({...vals, debt: e.target.value})} placeholder="0" />
-                                </div>
-                                <button onClick={calc} className="w-full py-4 bg-[#1a1a1a] text-white font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors shadow-lg">
-                                    Calcular Zakat
-                                </button>
-
-                                {res !== null && (
-                                    <div className="mt-8 pt-8 border-t text-center animate-pulse">
-                                        <span className="text-xs font-bold text-[#cda434] uppercase">A Pagar (2.5%)</span>
-                                        <div className="text-5xl font-mono font-bold text-gray-900 mt-2">{res.toFixed(2)} €</div>
-                                        <div className="mt-4 inline-block bg-[#f4f4f4] px-4 py-2 rounded-full text-sm font-mono text-gray-600">Bizum: 600 00 00 00</div>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Carta 3D (Derecha) */}
-                            <div className="h-[400px] perspective-1000 cursor-pointer group" onClick={() => setFlipped(!flipped)}>
-                                <div className={`relative w-full h-full transition-transform duration-700 transform-style-3d preserve-3d ${flipped ? 'rotate-y-180' : ''}`}>
-                                    <div className="absolute inset-0 backface-hidden bg-[#1a1a1a] text-white rounded-2xl p-8 flex flex-col justify-center items-center text-center border border-gray-700 shadow-2xl">
-                                        <div className="text-6xl opacity-10 mb-4">۞</div>
-                                        <h3 className="font-amiri text-2xl mb-4">خُذْ مِنْ أَمْوَالِهِمْ صَدَقَةً</h3>
-                                        <div className="w-12 h-[1px] bg-white/20 mb-4"></div>
-                                        <p className="text-sm opacity-70 italic">"Toma de sus bienes una caridad..."</p>
-                                    </div>
-                                    <div className="absolute inset-0 backface-hidden bg-[#cda434] text-white rounded-2xl p-8 flex flex-col justify-center items-center text-center rotate-y-180 shadow-2xl border border-white/20">
-                                        <div className="text-6xl opacity-20 mb-4 text-black">۞</div>
-                                        <h3 className="font-amiri text-2xl mb-4 font-bold text-black">أَنْفِقْ أُنْفِقْ عَلَيْكَ</h3>
-                                        <div className="w-12 h-[1px] bg-black/20 mb-4"></div>
-                                        <p className="text-sm font-bold text-black italic">"Gasta, y Yo gastaré en ti."</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <section id="zakat" className="py-24 bg-[#f2f2f2]"><div className="container mx-auto px-6 text-center"><h2 className="text-3xl font-light text-gray-900 mb-2">Calculadora <span className="font-bold">Zakat</span></h2><p className="text-gray-500 mb-12">Purifica tu riqueza con precisión.</p><div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto"><div className="md:col-span-2 bg-white p-10 rounded-2xl shadow-xl text-left border border-gray-200 relative z-10"><div className="grid md:grid-cols-2 gap-6 mb-6"><div><label className="text-xs font-bold text-gray-400 uppercase">Dinero (€)</label><input type="number" className="w-full p-3 bg-gray-50 border rounded-lg mt-2 font-mono text-lg outline-none focus:border-[#cda434] transition-colors" onChange={e => setVals({...vals, cash: e.target.value})} placeholder="0" /></div><div><label className="text-xs font-bold text-gray-400 uppercase">Oro (€)</label><input type="number" className="w-full p-3 bg-gray-50 border rounded-lg mt-2 font-mono text-lg outline-none focus:border-[#cda434] transition-colors" onChange={e => setVals({...vals, gold: e.target.value})} placeholder="0" /></div></div><div className="mb-8"><label className="text-xs font-bold text-gray-400 uppercase">Deudas (-)</label><input type="number" className="w-full p-3 bg-gray-50 border rounded-lg mt-2 font-mono text-lg outline-none focus:border-[#cda434]" onChange={e => setVals({...vals, debt: e.target.value})} placeholder="0" /></div><button onClick={calc} className="w-full py-4 bg-[#1a1a1a] text-white font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors shadow-lg">Calcular</button>{res !== null && (<div className="mt-8 pt-8 border-t text-center animate-pulse"><span className="text-xs font-bold text-[#cda434] uppercase">A Pagar (2.5%)</span><div className="text-5xl font-mono font-bold text-gray-900 mt-2">{res.toFixed(2)} €</div></div>)}</div><div className="h-[400px] perspective-1000 cursor-pointer group" onClick={() => setFlipped(!flipped)}><div className={`relative w-full h-full transition-transform duration-700 transform-style-3d preserve-3d ${flipped ? 'rotate-y-180' : ''}`}><div className="absolute inset-0 backface-hidden bg-[#1a1a1a] text-white rounded-2xl p-8 flex flex-col justify-center items-center text-center border border-gray-700 shadow-2xl"><div className="text-6xl opacity-10 mb-4">۞</div><h3 className="font-amiri text-2xl mb-4">خُذْ مِنْ أَمْوَالِهِمْ صَدَقَةً</h3><p className="text-sm opacity-70 italic">"Toma de sus bienes una caridad..."</p></div><div className="absolute inset-0 backface-hidden bg-[#cda434] text-white rounded-2xl p-8 flex flex-col justify-center items-center text-center rotate-y-180 shadow-2xl border border-white/20"><div className="text-6xl opacity-20 mb-4 text-black">۞</div><h3 className="font-amiri text-2xl mb-4 font-bold text-black">أَنْفِقْ أُنْفِقْ عَلَيْكَ</h3><p className="text-sm font-bold text-black italic">"Gasta, y Yo gastaré en ti."</p></div></div></div></div></div></section>
             );
         };
 
-        // --- COMPONENTE: GUIA HALAL ---
-        const HalalMap = () => (
-            <section id="actividades" className="py-24 bg-white">
-                <div className="container mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-light text-gray-900">Guía <span className="font-bold">Halal</span></h2>
-                        <p className="text-gray-400 text-sm mt-2 tracking-widest uppercase">Comercios en Alcalá</p>
-                    </div>
-                    <div className="rounded-2xl overflow-hidden shadow-2xl border border-gray-200 h-[500px]">
-                        <iframe src="https://www.google.com/maps/d/u/4/embed?mid=1EftU_JMAdlCRFdM6hmP6iXyIcdZuMcs&ehbc=2E312F" width="100%" height="100%" style={{border:0}}></iframe>
-                    </div>
-                </div>
-            </section>
-        );
-
-        // --- APP MAIN ---
         const App = () => {
+            const [view, setView] = useState('home');
+            const [selectedArticle, setSelectedArticle] = useState(null);
+            const handleReadArticle = (article) => { setSelectedArticle(article); setView('article'); };
+            const handleBack = () => { setView('home'); setSelectedArticle(null); };
+
+            if (view === 'article' && selectedArticle) {
+                return (<div><Navbar onNavigate={() => handleBack()} /><ArticleView article={selectedArticle} onBack={handleBack} /></div>);
+            }
+
             return (
                 <div className="min-h-screen">
-                    <Navbar />
+                    <Navbar onNavigate={(target) => window.location.hash = target} />
                     <Hero />
+                    <AboutUs />
+                    <DiscoverIslam />
+                    <BlogSection onReadArticle={handleReadArticle} /> 
                     <PrayerSection />
                     <Wisdom />
-                    <section className="py-24 bg-white">
-                        <div className="container mx-auto px-6">
-                            <div className="text-center mb-16"><h2 className="text-4xl font-light text-gray-900">Vida en la <span className="font-bold">Mezquita</span></h2></div>
-                            <div className="grid md:grid-cols-3 gap-8">
-                                {[
-                                    {t: 'Madrasa', d: 'Clases de árabe y valores', i: 'book-open'},
-                                    {t: 'Juventud', d: 'Deporte y convivencia', i: 'users'},
-                                    {t: 'Social', d: 'Ayuda humanitaria', i: 'heart'}
-                                ].map((item, i) => (
-                                    <div key={i} className="p-8 border border-gray-100 hover:border-gray-300 transition-all hover:-translate-y-2 bg-[#f9f9f9]">
-                                        <Icon name={item.i} size={40} className="text-gray-400 mb-6" />
-                                        <h3 className="text-xl font-bold mb-2">{item.t}</h3>
-                                        <p className="text-gray-500 font-light">{item.d}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-                    <HalalMap />
+                    <section className="py-24 bg-white"><div className="container mx-auto px-6"><div className="text-center mb-16"><h2 className="text-4xl font-light text-gray-900">Vida en la <span className="font-bold">Mezquita</span></h2></div><div className="grid md:grid-cols-3 gap-8">{[{t: 'Madrasa', d: 'Clases de árabe y valores', i: 'book-open'},{t: 'Juventud', d: 'Deporte y convivencia', i: 'users'},{t: 'Social', d: 'Ayuda humanitaria', i: 'heart'}].map((item, i) => (<div key={i} className="p-8 border border-gray-100 hover:border-gray-300 transition-all hover:-translate-y-2 bg-[#f9f9f9]"><Icon name={item.i} size={40} className="text-gray-400 mb-6" /><h3 className="text-xl font-bold mb-2">{item.t}</h3><p className="text-gray-500 font-light">{item.d}</p></div>))}</div></div></section>
+                    <DigitalLibrary />
+                    <HalalGuide />
                     <ZakatCalc />
-                    <footer id="contacto" className="bg-[#111] text-white py-12 border-t border-gray-800">
-                        <div className="container mx-auto px-6 text-center">
-                            <h3 className="text-xl font-bold mb-4">MEZQUITA GUADAÍRA</h3>
-                            <p className="text-gray-500 text-sm mb-8">C. Antón de Medellín, 6, Alcalá de Guadaíra</p>
-                            <p className="text-gray-600 text-xs uppercase tracking-widest">© 2026</p>
-                        </div>
-                    </footer>
+                    <footer id="contacto" className="bg-[#111] text-white py-12 border-t border-gray-800"><div className="container mx-auto px-6 text-center"><h3 className="text-xl font-bold mb-4">MEZQUITA GUADAÍRA</h3><p className="text-gray-500 text-sm mb-8">C. Antón de Medellín, 6, Alcalá de Guadaíra</p><p className="text-gray-600 text-xs uppercase tracking-widest">© 2026</p></div></footer>
                     <a href="https://wa.me/34600000000" className="fixed bottom-8 right-8 bg-[#1a1a1a] text-white p-4 rounded-full shadow-2xl z-50 hover:scale-110 transition-transform border border-gray-500"><Icon name="message-circle" /></a>
                 </div>
             );
