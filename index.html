@@ -14,7 +14,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- ANIMACIONES (Framer Motion) -->
-    <script src="https://unpkg.com/framer-motion@6.5.1/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
     
     <!-- ICONOS (Lucide) -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -64,7 +64,6 @@
             overflow: hidden;
             background: linear-gradient(to bottom, #02040a 0%, #1a2639 60%, #2c3e50 100%);
         }
-        
         .star {
             position: absolute;
             background: white;
@@ -73,25 +72,87 @@
             animation: parpadeo 3s infinite alternate;
         }
         @keyframes parpadeo { 0% { opacity: 0.4; } 100% { opacity: 1; } }
+        .moon-svg-wrapper { width: 220px; height: 220px; filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8)); }
+        .mist-layer { background: radial-gradient(ellipse at center bottom, rgba(255,255,255,0.08) 0%, transparent 60%); mix-blend-mode: screen; }
+        .vignette { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%); pointer-events: none; z-index: 10; }
 
-        .moon-svg-wrapper {
-            width: 220px;
-            height: 220px;
-            filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8));
+        /* --- QIBLA COMPASS STYLES --- */
+        .qibla-section {
+            background-color: #0f172a;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
-        .mist-layer {
-            background: radial-gradient(ellipse at center bottom, rgba(255,255,255,0.08) 0%, transparent 60%);
-            mix-blend-mode: screen;
+        .compass-container {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #2c3e50, #000);
+            box-shadow: 
+                0 0 0 10px rgba(205, 164, 52, 0.1),
+                0 0 0 20px rgba(205, 164, 52, 0.05),
+                0 0 60px rgba(205, 164, 52, 0.2);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s ease-out;
         }
-
-        .vignette {
+        .compass-inner {
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .compass-needle {
+            width: 6px;
+            height: 140px;
+            background: linear-gradient(to top, #cda434 50%, #ff4d4d 50%);
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%);
-            pointer-events: none;
+            top: 50%;
+            left: 50%;
+            transform-origin: center center;
+            transform: translate(-50%, -50%) rotate(0deg);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 10;
         }
+        .compass-needle::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 12px solid #ff4d4d;
+        }
+        .kaaba-icon {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #cda434;
+            text-shadow: 0 0 10px rgba(205, 164, 52, 0.5);
+        }
+        .cardinals {
+            position: absolute;
+            width: 100%; height: 100%;
+            color: rgba(255,255,255,0.4);
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .cardinals span { position: absolute; }
+        .cardinals .n { top: 10px; left: 50%; transform: translateX(-50%); color: #ff4d4d; }
+        .cardinals .s { bottom: 10px; left: 50%; transform: translateX(-50%); }
+        .cardinals .e { right: 15px; top: 50%; transform: translateY(-50%); }
+        .cardinals .w { left: 15px; top: 50%; transform: translateY(-50%); }
     </style>
 </head>
 <body>
@@ -179,19 +240,19 @@
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
             return (
-                <nav className={`fixed w-full z-[100] transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur shadow-md py-4' : 'bg-transparent py-8'}`}>
+                <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur shadow-md py-4' : 'bg-transparent py-8'}`}>
                     <div className="container mx-auto px-6 flex justify-between items-center">
                         <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
                             <div className="w-10 h-10 border-2 flex items-center justify-center font-serif text-xl" style={{ borderColor: scrolled ? C.black : 'white', color: scrolled ? C.black : 'white' }}>M</div>
                             <div className="flex flex-col"><span className="text-sm font-bold tracking-[0.2em]" style={{ color: scrolled ? C.black : 'white' }}>MEZQUITA</span><span className="text-xs tracking-[0.3em]" style={{ color: scrolled ? C.gold : '#ccc' }}>GUADAÍRA</span></div>
                         </div>
                         <div className={`hidden md:flex gap-8 text-sm font-bold tracking-widest ${scrolled ? 'text-gray-800' : 'text-white'}`}>
-                            {['Inicio', 'Nosotros', 'Descubre', 'Blog', 'Horarios', 'Biblioteca', 'Zakat'].map(item => (<a key={item} href={`#${item.toLowerCase()}`} onClick={() => onNavigate('home')} className="hover:text-[#cda434] transition-colors">{item.toUpperCase()}</a>))}
+                            {['Inicio', 'Nosotros', 'Descubre', 'Blog', 'Horarios', 'Qibla', 'Biblioteca', 'Zakat'].map(item => (<a key={item} href={`#${item.toLowerCase()}`} onClick={() => onNavigate('home')} className="hover:text-[#cda434] transition-colors">{item.toUpperCase()}</a>))}
                             <a href="#contacto" className="px-6 py-2 border border-[#cda434] text-[#cda434] rounded-full hover:bg-[#cda434] hover:text-white transition-all">DONAR</a>
                         </div>
                         <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}><Icon name={menuOpen ? "x" : "menu"} className={scrolled ? "text-black" : "text-white"} /></button>
                     </div>
-                    {menuOpen && (<div className="absolute top-full left-0 w-full bg-white shadow-xl p-6 flex flex-col gap-4 text-center md:hidden">{['Inicio', 'Nosotros', 'Descubre', 'Blog', 'Horarios', 'Biblioteca', 'Zakat', 'Contacto'].map(item => (<a key={item} href={`#${item.toLowerCase()}`} onClick={() => { setMenuOpen(false); onNavigate('home'); }} className="text-gray-800 font-bold py-2 border-b border-gray-100">{item}</a>))}</div>)}
+                    {menuOpen && (<div className="absolute top-full left-0 w-full bg-white shadow-xl p-6 flex flex-col gap-4 text-center md:hidden">{['Inicio', 'Nosotros', 'Descubre', 'Blog', 'Horarios', 'Qibla', 'Biblioteca', 'Zakat', 'Contacto'].map(item => (<a key={item} href={`#${item.toLowerCase()}`} onClick={() => { setMenuOpen(false); onNavigate('home'); }} className="text-gray-800 font-bold py-2 border-b border-gray-100">{item}</a>))}</div>)}
                 </nav>
             );
         };
@@ -239,7 +300,6 @@
                 y.set(e.clientY - rect.top - rect.height / 2);
             };
             
-            // Generar estrellas una sola vez
             const stars = useMemo(() => Array.from({ length: 120 }).map((_, i) => ({
                 left: Math.random() * 100 + '%',
                 top: Math.random() * 85 + '%',
@@ -253,16 +313,13 @@
                     className="relative min-h-screen py-32 overflow-hidden flex items-center justify-center"
                     onMouseMove={handleMouseMove}
                 >
-                    {/* FONDO PARALLAX (Tus Capas) */}
                     <div className="parallax-scene">
-                        {/* 1. Estrellas */}
                         <motion.div className="absolute inset-0 w-[120%] h-[120%] -left-[10%] -top-[10%]" style={{ x: useTransform(x, v => v * 0.02), y: useTransform(y, v => v * 0.02) }}>
                             {stars.map((s, i) => (
                                 <div key={i} className="star" style={{left: s.left, top: s.top, width: s.size, height: s.size, animationDelay: s.delay}}></div>
                             ))}
                         </motion.div>
 
-                        {/* 2. LUNA 3D (SVG + MASK + GRADIENT) - Movimiento invertido */}
                         <motion.div className="absolute top-[15%] right-[10%] lg:right-[15%] z-0" style={{ x: useTransform(x, v => v * -0.04), y: useTransform(y, v => v * -0.04) }}>
                              <div className="moon-svg-wrapper">
                                 <svg viewBox="0 0 100 100" style={{transform: 'rotate(-25deg)', width: '100%', height: '100%'}}>
@@ -281,23 +338,17 @@
                              </div>
                         </motion.div>
 
-                        {/* 3. Niebla */}
                         <motion.div className="absolute inset-0 mist-layer w-full h-full pointer-events-none" style={{ x: useTransform(x, v => v * 0.08) }}></motion.div>
 
-                        {/* 4. Suelo (Colinas + Silueta) */}
                         <motion.div className="absolute bottom-[-5vh] left-0 w-full flex items-end justify-center pointer-events-none z-0" style={{ x: useTransform(x, v => v * 0.10) }}>
                             <svg viewBox="0 0 1000 200" preserveAspectRatio="none" className="w-[110vw] h-auto max-h-[35vh] min-w-[1200px]" style={{fill: '#050810'}}>
                                 <path d="M0,200 L0,100 Q300,50 500,80 Q700,110 1000,60 L1000,200 Z" />
                             </svg>
-                             {/* Castillo Silueta simple superpuesta */}
                              <div className="absolute bottom-[20%] left-[15%] w-[150px] h-[30px] bg-[#05160d] opacity-80" style={{clipPath: 'polygon(0% 100%, 10% 100%, 10% 60%, 20% 60%, 20% 100%, 30% 100%, 30% 50%, 40% 50%, 40% 100%, 50% 100%, 50% 30%, 70% 30%, 70% 100%, 100% 100%)'}}></div>
                         </motion.div>
-
-                        {/* Viñeta */}
                         <div className="vignette"></div>
                     </div>
 
-                    {/* CONTENIDO (FLOTANDO SOBRE LA ESCENA) */}
                     <div className="container mx-auto px-6 relative z-20">
                         <div className="text-center mb-12">
                             <motion.span initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#cda434] mb-2 block">Bienvenida y Orientación</motion.span>
@@ -307,9 +358,9 @@
                         <div className="max-w-5xl mx-auto bg-white/5 backdrop-blur-xl rounded-3xl p-10 md:p-16 border border-white/10 shadow-2xl relative overflow-hidden">
                             <AnimatePresence mode="wait">
                                 {activeTab === 'curiosity' ? (
-                                    <motion.div key="curiosity" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.4 }} className="grid md:grid-cols-2 gap-12 items-center"><div><h3 className="text-3xl font-bold mb-6 text-white font-amiri">Más allá de lo que ves en la tele</h3><p className="text-gray-300 mb-8 leading-relaxed font-light text-lg">El Islam es paz, justicia y conexión con el Creador. En Alcalá somos tus vecinos, tus compañeros de trabajo y amigos. Te invitamos a conocernos sin filtros.</p><ul className="space-y-4 mb-10"><li className="flex items-center gap-4 text-sm text-gray-200"><div className="w-6 h-6 rounded-full bg-[#cda434]/20 flex items-center justify-center text-[#cda434]"><Icon name="check" size={14} /></div> Dios es Uno y Único (Tawhid).</li><li className="flex items-center gap-4 text-sm text-gray-200"><div className="w-6 h-6 rounded-full bg-[#cda434]/20 flex items-center justify-center text-[#cda434]"><Icon name="check" size={14} /></div> Respeto a Jesús, Moisés y todos los profetas.</li><li className="flex items-center gap-4 text-sm text-gray-200"><div className="w-6 h-6 rounded-full bg-[#cda434]/20 flex items-center justify-center text-[#cda434]"><Icon name="check" size={14} /></div> Ciencia y Fe van de la mano.</li></ul><a href="#contacto" className="inline-block bg-white text-black px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#cda434] transition-all hover:scale-105 shadow-lg">Ven a tomar un té</a></div><div className="bg-black/40 p-8 rounded-2xl border border-white/5 text-center relative overflow-hidden group"><div className="absolute inset-0 bg-[#cda434]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div><Icon name="help-circle" size={64} className="text-[#cda434] mx-auto mb-6 opacity-80" /><h4 className="text-xl font-bold mb-3 text-white">¿Tienes dudas?</h4><p className="text-sm text-gray-400 mb-8 font-light">Escríbenos por WhatsApp con total confianza.</p><a href="https://wa.me/34600000000" className="inline-flex items-center gap-2 text-[#cda434] text-sm font-bold hover:text-white transition-colors">Chatear ahora <Icon name="arrow-right" size={16} /></a></div></motion.div>
+                                    <motion.div key="curiosity" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.4 }} className="grid md:grid-cols-2 gap-12 items-center"><div><h3 className="text-3xl font-bold mb-6 text-white font-amiri">Más allá de lo que ves en la tele</h3><p className="text-gray-300 mb-8 leading-relaxed font-light text-lg">El Islam es paz, justicia y conexión con el Creador. En Alcalá somos tus vecinos. Te invitamos a conocernos sin filtros.</p><ul className="space-y-4 mb-10"><li className="flex items-center gap-4 text-sm text-gray-200"><div className="w-6 h-6 rounded-full bg-[#cda434]/20 flex items-center justify-center text-[#cda434]"><Icon name="check" size={14} /></div> Dios es Uno y Único (Tawhid).</li><li className="flex items-center gap-4 text-sm text-gray-200"><div className="w-6 h-6 rounded-full bg-[#cda434]/20 flex items-center justify-center text-[#cda434]"><Icon name="check" size={14} /></div> Respeto a Jesús, Moisés y todos los profetas.</li></ul><a href="#contacto" className="inline-block bg-white text-black px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#cda434] transition-all hover:scale-105 shadow-lg">Ven a tomar un té</a></div><div className="bg-black/40 p-8 rounded-2xl border border-white/5 text-center relative overflow-hidden group"><div className="absolute inset-0 bg-[#cda434]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div><Icon name="help-circle" size={64} className="text-[#cda434] mx-auto mb-6 opacity-80" /><h4 className="text-xl font-bold mb-3 text-white">¿Tienes dudas?</h4><p className="text-sm text-gray-400 mb-8 font-light">Escríbenos por WhatsApp con total confianza.</p><a href="https://wa.me/34600000000" className="inline-flex items-center gap-2 text-[#cda434] text-sm font-bold hover:text-white transition-colors">Chatear ahora <Icon name="arrow-right" size={16} /></a></div></motion.div>
                                 ) : (
-                                    <motion.div key="newMuslim" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.4 }}><div className="text-center mb-12"><span className="text-[#cda434] text-2xl font-serif block mb-3 font-amiri">¡As-Salamu Alaykum!</span><h3 className="text-4xl font-bold text-white">Bienvenido a casa, hermano/a</h3><p className="text-gray-400 mt-6 max-w-2xl mx-auto font-light text-lg">Has dado el paso más importante de tu vida. No estás solo en este camino. Aquí tienes los primeros pasos para empezar con firmeza.</p></div><div className="grid md:grid-cols-3 gap-8"><div className="bg-[#2c2c2c] p-8 rounded-2xl hover:-translate-y-2 transition-transform border border-gray-700 hover:border-gray-500"><Icon name="droplet" size={40} className="text-blue-400 mb-6" /><h4 className="font-bold text-lg mb-3 text-white">1. La Purificación</h4><p className="text-sm text-gray-400 leading-relaxed">Aprende a hacer el Ghusl y el Wudu.</p></div><div className="bg-[#2c2c2c] p-8 rounded-2xl hover:-translate-y-2 transition-transform border border-gray-700 hover:border-[#cda434] group"><Icon name="moon" size={40} className="text-[#cda434] mb-6 group-hover:scale-110 transition-transform" /><h4 className="font-bold text-lg mb-3 text-white">2. El Salat</h4><p className="text-sm text-gray-400 leading-relaxed">Tu conexión diaria con Allah.</p></div><div className="bg-[#2c2c2c] p-8 rounded-2xl hover:-translate-y-2 transition-transform border border-gray-700 hover:border-green-500"><Icon name="users" size={40} className="text-green-400 mb-6" /><h4 className="font-bold text-lg mb-3 text-white">3. Tu Comunidad</h4><p className="text-sm text-gray-400 leading-relaxed">Ven los viernes. Conoce gente.</p></div></div><div className="text-center mt-12"><button className="bg-[#cda434] text-black px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors shadow-[0_0_30px_rgba(205,164,52,0.3)]">Descargar "Kit de Bienvenida" (PDF)</button></div></motion.div>
+                                    <motion.div key="newMuslim" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.4 }}><div className="text-center mb-12"><span className="text-[#cda434] text-2xl font-serif block mb-3 font-amiri">¡As-Salamu Alaykum!</span><h3 className="text-4xl font-bold text-white">Bienvenido a casa, hermano/a</h3><p className="text-gray-400 mt-6 max-w-2xl mx-auto font-light text-lg">Has dado el paso más importante de tu vida. No estás solo en este camino.</p></div><div className="grid md:grid-cols-3 gap-8"><div className="bg-[#2c2c2c] p-8 rounded-2xl border border-gray-700 hover:border-gray-500"><Icon name="droplet" size={40} className="text-blue-400 mb-6" /><h4 className="font-bold text-lg mb-3 text-white">1. La Purificación</h4><p className="text-sm text-gray-400">Aprende a hacer el Ghusl y el Wudu.</p></div><div className="bg-[#2c2c2c] p-8 rounded-2xl border border-gray-700 hover:border-[#cda434]"><Icon name="moon" size={40} className="text-[#cda434] mb-6" /><h4 className="font-bold text-lg mb-3 text-white">2. El Salat</h4><p className="text-sm text-gray-400">Tu conexión diaria con Allah.</p></div><div className="bg-[#2c2c2c] p-8 rounded-2xl border border-gray-700 hover:border-green-500"><Icon name="users" size={40} className="text-green-400 mb-6" /><h4 className="font-bold text-lg mb-3 text-white">3. Tu Comunidad</h4><p className="text-sm text-gray-400">Ven los viernes. Conoce gente.</p></div></div><div className="text-center mt-12"><button className="bg-[#cda434] text-black px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">Descargar "Kit de Bienvenida" (PDF)</button></div></motion.div>
                                 )}
                             </AnimatePresence>
                         </div>
@@ -394,6 +445,54 @@
             );
         };
 
+        // --- QIBLA FINDER ---
+        const QiblaSection = () => {
+            return (
+                <section id="qibla" className="qibla-section py-24">
+                    <div className="absolute inset-0 w-full h-full parallax-scene">
+                        <div className="vignette"></div>
+                        <div className="stars-container" style={{animation: 'none'}}>
+                            {/* Estrellas estáticas o levemente animadas */}
+                            {Array.from({length: 50}).map((_, i) => (
+                                <div key={i} className="star" style={{left: Math.random()*100 + '%', top: Math.random()*100 + '%', width: Math.random()*2 + 'px', height: Math.random()*2 + 'px', animationDelay: Math.random()*5 + 's'}}></div>
+                            ))}
+                        </div>
+                        <div className="mist-layer absolute inset-0"></div>
+                        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-black to-transparent z-10"></div>
+                    </div>
+
+                    <div className="container mx-auto px-6 relative z-20 text-center">
+                        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#cda434] mb-4 block animate-pulse">Dirección Sagrada</span>
+                        <h2 className="text-4xl font-light text-white mb-12">Encuentra la <span className="font-bold text-[#cda434]">Qibla</span></h2>
+                        
+                        <div className="flex justify-center perspective-1000">
+                            <motion.div 
+                                className="compass-container"
+                                whileHover={{ scale: 1.05 }}
+                                transition={{ type: "spring", stiffness: 300 }}
+                            >
+                                <div className="compass-inner">
+                                    <div className="compass-needle"></div>
+                                    <div className="kaaba-icon">🕋</div>
+                                    <div className="cardinals">
+                                        <span className="n">N</span>
+                                        <span className="s">S</span>
+                                        <span className="e">E</span>
+                                        <span className="w">O</span>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                        
+                        <p className="text-gray-400 text-sm mt-12 max-w-md mx-auto font-light">
+                            La brújula apunta hacia La Meca (aprox. 102° Este desde Alcalá).
+                            <br/><span className="text-xs opacity-50">*Esta es una simulación visual. Usa una app GPS para precisión exacta.</span>
+                        </p>
+                    </div>
+                </section>
+            );
+        };
+
         const Wisdom = () => {
             const [idx, setIdx] = useState(0);
             return (
@@ -401,7 +500,6 @@
             );
         };
 
-        // --- DIGITAL LIBRARY (CON EFECTO 3D RESTAURADO) ---
         const DigitalLibrary = () => {
             const [filter, setFilter] = useState('Todos');
             const [search, setSearch] = useState('');
@@ -454,7 +552,6 @@
             );
         };
 
-        // --- HALAL GUIDE (CON HOVERS MEJORADOS Y VIDEO) ---
         const HalalGuide = () => {
             return (
                 <section id="guia-halal" className="py-24 bg-[#f2f2f2]">
@@ -522,6 +619,7 @@
                     <DiscoverIslam />
                     <BlogSection onReadArticle={handleReadArticle} /> 
                     <PrayerSection />
+                    <QiblaSection /> {/* AÑADIDA SECCIÓN QIBLA */}
                     <Wisdom />
                     <section className="py-24 bg-white"><div className="container mx-auto px-6"><div className="text-center mb-16"><h2 className="text-4xl font-light text-gray-900">Vida en la <span className="font-bold">Mezquita</span></h2></div><div className="grid md:grid-cols-3 gap-8">{[{t: 'Madrasa', d: 'Clases de árabe y valores', i: 'book-open'},{t: 'Juventud', d: 'Deporte y convivencia', i: 'users'},{t: 'Social', d: 'Ayuda humanitaria', i: 'heart'}].map((item, i) => (<div key={i} className="p-8 border border-gray-100 hover:border-gray-300 transition-all hover:-translate-y-2 bg-[#f9f9f9]"><Icon name={item.i} size={40} className="text-gray-400 mb-6" /><h3 className="text-xl font-bold mb-2">{item.t}</h3><p className="text-gray-500 font-light">{item.d}</p></div>))}</div></div></section>
                     <DigitalLibrary />
