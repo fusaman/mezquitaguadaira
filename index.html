@@ -14,7 +14,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- ANIMACIONES (Framer Motion) -->
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/framer-motion@6.5.1/dist/framer-motion.js"></script>
     
     <!-- ICONOS (Lucide) -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -116,10 +116,10 @@
             top: 50%;
             left: 50%;
             transform-origin: center center;
-            transform: translate(-50%, -50%) rotate(0deg);
+            transform: translate(-50%, -50%);
             border-radius: 4px;
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.5s ease-out;
             z-index: 10;
         }
         .compass-needle::after {
@@ -288,72 +288,25 @@
             </section>
         );
 
-        // --- COMPONENTE: DESCUBRE EL ISLAM (PARALLAX + LUNA 3D RECREADA) ---
+        // --- COMPONENTE: DESCUBRE EL ISLAM ---
         const DiscoverIslam = () => {
             const [activeTab, setActiveTab] = useState('curiosity'); 
             const x = useMotionValue(0);
             const y = useMotionValue(0);
-
-            const handleMouseMove = (e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                x.set(e.clientX - rect.left - rect.width / 2);
-                y.set(e.clientY - rect.top - rect.height / 2);
-            };
-            
-            const stars = useMemo(() => Array.from({ length: 120 }).map((_, i) => ({
-                left: Math.random() * 100 + '%',
-                top: Math.random() * 85 + '%',
-                size: Math.random() * 2.5 + 'px',
-                delay: Math.random() * 5 + 's'
-            })), []);
+            const handleMouseMove = (e) => { const rect = e.currentTarget.getBoundingClientRect(); x.set(e.clientX - rect.left - rect.width / 2); y.set(e.clientY - rect.top - rect.height / 2); };
+            const stars = useMemo(() => Array.from({ length: 120 }).map((_, i) => ({ left: Math.random() * 100 + '%', top: Math.random() * 85 + '%', size: Math.random() * 2.5 + 'px', delay: Math.random() * 5 + 's' })), []);
 
             return (
-                <section 
-                    id="descubre" 
-                    className="relative min-h-screen py-32 overflow-hidden flex items-center justify-center"
-                    onMouseMove={handleMouseMove}
-                >
+                <section id="descubre" className="relative min-h-screen py-32 overflow-hidden flex items-center justify-center" onMouseMove={handleMouseMove}>
                     <div className="parallax-scene">
-                        <motion.div className="absolute inset-0 w-[120%] h-[120%] -left-[10%] -top-[10%]" style={{ x: useTransform(x, v => v * 0.02), y: useTransform(y, v => v * 0.02) }}>
-                            {stars.map((s, i) => (
-                                <div key={i} className="star" style={{left: s.left, top: s.top, width: s.size, height: s.size, animationDelay: s.delay}}></div>
-                            ))}
-                        </motion.div>
-
-                        <motion.div className="absolute top-[15%] right-[10%] lg:right-[15%] z-0" style={{ x: useTransform(x, v => v * -0.04), y: useTransform(y, v => v * -0.04) }}>
-                             <div className="moon-svg-wrapper">
-                                <svg viewBox="0 0 100 100" style={{transform: 'rotate(-25deg)', width: '100%', height: '100%'}}>
-                                    <defs>
-                                        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style={{stopColor:'#FFF8DC'}}/>
-                                            <stop offset="100%" style={{stopColor:'#FFD700'}}/>
-                                        </linearGradient>
-                                        <mask id="moonCutout">
-                                            <rect x="0" y="0" width="100" height="100" fill="white"/>
-                                            <circle cx="35" cy="40" r="35" fill="black"/>
-                                        </mask>
-                                    </defs>
-                                    <circle cx="50" cy="50" r="40" fill="url(#goldGrad)" mask="url(#moonCutout)" />
-                                </svg>
-                             </div>
-                        </motion.div>
-
+                        <motion.div className="absolute inset-0 w-[120%] h-[120%] -left-[10%] -top-[10%]" style={{ x: useTransform(x, v => v * 0.02), y: useTransform(y, v => v * 0.02) }}>{stars.map((s, i) => (<div key={i} className="star" style={{left: s.left, top: s.top, width: s.size, height: s.size, animationDelay: s.delay}}></div>))}</motion.div>
+                        <motion.div className="absolute top-[15%] right-[10%] lg:right-[15%] z-0" style={{ x: useTransform(x, v => v * -0.04), y: useTransform(y, v => v * -0.04) }}><div className="moon-svg-wrapper"><svg viewBox="0 0 100 100" style={{transform: 'rotate(-25deg)', width: '100%', height: '100%'}}><defs><linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style={{stopColor:'#FFF8DC'}}/><stop offset="100%" style={{stopColor:'#FFD700'}}/></linearGradient><mask id="moonCutout"><rect x="0" y="0" width="100" height="100" fill="white"/><circle cx="35" cy="40" r="35" fill="black"/></mask></defs><circle cx="50" cy="50" r="40" fill="url(#goldGrad)" mask="url(#moonCutout)" /></svg></div></motion.div>
                         <motion.div className="absolute inset-0 mist-layer w-full h-full pointer-events-none" style={{ x: useTransform(x, v => v * 0.08) }}></motion.div>
-
-                        <motion.div className="absolute bottom-[-5vh] left-0 w-full flex items-end justify-center pointer-events-none z-0" style={{ x: useTransform(x, v => v * 0.10) }}>
-                            <svg viewBox="0 0 1000 200" preserveAspectRatio="none" className="w-[110vw] h-auto max-h-[35vh] min-w-[1200px]" style={{fill: '#050810'}}>
-                                <path d="M0,200 L0,100 Q300,50 500,80 Q700,110 1000,60 L1000,200 Z" />
-                            </svg>
-                             <div className="absolute bottom-[20%] left-[15%] w-[150px] h-[30px] bg-[#05160d] opacity-80" style={{clipPath: 'polygon(0% 100%, 10% 100%, 10% 60%, 20% 60%, 20% 100%, 30% 100%, 30% 50%, 40% 50%, 40% 100%, 50% 100%, 50% 30%, 70% 30%, 70% 100%, 100% 100%)'}}></div>
-                        </motion.div>
+                        <motion.div className="absolute bottom-[-5vh] left-0 w-full flex items-end justify-center pointer-events-none z-0" style={{ x: useTransform(x, v => v * 0.10) }}><svg viewBox="0 0 1000 200" preserveAspectRatio="none" className="w-[110vw] h-auto max-h-[35vh] min-w-[1200px]" style={{fill: '#050810'}}><path d="M0,200 L0,100 Q300,50 500,80 Q700,110 1000,60 L1000,200 Z" /></svg><div className="absolute bottom-[20%] left-[15%] w-[150px] h-[30px] bg-[#05160d] opacity-80" style={{clipPath: 'polygon(0% 100%, 10% 100%, 10% 60%, 20% 60%, 20% 100%, 30% 100%, 30% 50%, 40% 50%, 40% 100%, 50% 100%, 50% 30%, 70% 30%, 70% 100%, 100% 100%)'}}></div></motion.div>
                         <div className="vignette"></div>
                     </div>
-
                     <div className="container mx-auto px-6 relative z-20">
-                        <div className="text-center mb-12">
-                            <motion.span initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#cda434] mb-2 block">Bienvenida y Orientación</motion.span>
-                            <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl font-serif font-amiri text-white drop-shadow-lg">Descubre el Islam</motion.h2>
-                        </div>
+                        <div className="text-center mb-12"><motion.span initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#cda434] mb-2 block">Bienvenida y Orientación</motion.span><motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl font-serif font-amiri text-white drop-shadow-lg">Descubre el Islam</motion.h2></div>
                         <div className="flex justify-center mb-16 gap-6"><button onClick={() => setActiveTab('curiosity')} className={`px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'curiosity' ? 'bg-[#cda434] text-black shadow-[0_0_20px_rgba(205,164,52,0.4)]' : 'border border-white/20 text-gray-400 hover:text-white hover:border-white'}`}>¿Tienes Curiosidad?</button><button onClick={() => setActiveTab('newMuslim')} className={`px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'newMuslim' ? 'bg-[#cda434] text-black shadow-[0_0_20px_rgba(205,164,52,0.4)]' : 'border border-white/20 text-gray-400 hover:text-white hover:border-white'}`}>Soy Nuevo Musulmán</button></div>
                         <div className="max-w-5xl mx-auto bg-white/5 backdrop-blur-xl rounded-3xl p-10 md:p-16 border border-white/10 shadow-2xl relative overflow-hidden">
                             <AnimatePresence mode="wait">
@@ -440,54 +393,6 @@
                                 <div className="text-center pt-6"><a href="#" className="inline-block text-xs font-bold uppercase tracking-widest text-white bg-[#cda434] px-6 py-3 rounded-full hover:bg-black transition-colors">Descargar Calendario PDF</a></div>
                             </div>
                         </div>
-                    </div>
-                </section>
-            );
-        };
-
-        // --- QIBLA FINDER ---
-        const QiblaSection = () => {
-            return (
-                <section id="qibla" className="qibla-section py-24">
-                    <div className="absolute inset-0 w-full h-full parallax-scene">
-                        <div className="vignette"></div>
-                        <div className="stars-container" style={{animation: 'none'}}>
-                            {/* Estrellas estáticas o levemente animadas */}
-                            {Array.from({length: 50}).map((_, i) => (
-                                <div key={i} className="star" style={{left: Math.random()*100 + '%', top: Math.random()*100 + '%', width: Math.random()*2 + 'px', height: Math.random()*2 + 'px', animationDelay: Math.random()*5 + 's'}}></div>
-                            ))}
-                        </div>
-                        <div className="mist-layer absolute inset-0"></div>
-                        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-black to-transparent z-10"></div>
-                    </div>
-
-                    <div className="container mx-auto px-6 relative z-20 text-center">
-                        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#cda434] mb-4 block animate-pulse">Dirección Sagrada</span>
-                        <h2 className="text-4xl font-light text-white mb-12">Encuentra la <span className="font-bold text-[#cda434]">Qibla</span></h2>
-                        
-                        <div className="flex justify-center perspective-1000">
-                            <motion.div 
-                                className="compass-container"
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ type: "spring", stiffness: 300 }}
-                            >
-                                <div className="compass-inner">
-                                    <div className="compass-needle"></div>
-                                    <div className="kaaba-icon">🕋</div>
-                                    <div className="cardinals">
-                                        <span className="n">N</span>
-                                        <span className="s">S</span>
-                                        <span className="e">E</span>
-                                        <span className="w">O</span>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        </div>
-                        
-                        <p className="text-gray-400 text-sm mt-12 max-w-md mx-auto font-light">
-                            La brújula apunta hacia La Meca (aprox. 102° Este desde Alcalá).
-                            <br/><span className="text-xs opacity-50">*Esta es una simulación visual. Usa una app GPS para precisión exacta.</span>
-                        </p>
                     </div>
                 </section>
             );
@@ -601,6 +506,111 @@
             );
         };
 
+        // --- COMPONENTE: QIBLA REAL (AÑADIDO Y FUNCIONAL) ---
+        const QiblaSection = () => {
+            const [heading, setHeading] = useState(0);
+            const [qibla, setQibla] = useState(0); 
+            const [permissionGranted, setPermissionGranted] = useState(false);
+            const [errorMsg, setErrorMsg] = useState('');
+
+            // Coordenadas de la Meca (Kaaba)
+            const KAABA_COORDS = { lat: 21.422487, lng: 39.826206 };
+
+            const calculateQibla = (latitude, longitude) => {
+                const phiK = KAABA_COORDS.lat * Math.PI / 180.0;
+                const lambdaK = KAABA_COORDS.lng * Math.PI / 180.0;
+                const phi = latitude * Math.PI / 180.0;
+                const lambda = longitude * Math.PI / 180.0;
+                const psi = 180.0 / Math.PI * Math.atan2(
+                    Math.sin(lambdaK - lambda), 
+                    Math.cos(phi) * Math.tan(phiK) - Math.sin(phi) * Math.cos(lambdaK - lambda)
+                );
+                return Math.round(psi);
+            };
+
+            const startCompass = () => {
+                setErrorMsg('');
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        const { latitude, longitude } = position.coords;
+                        const q = calculateQibla(latitude, longitude);
+                        setQibla(q);
+                    }, (err) => {
+                        setErrorMsg('Necesitamos tu ubicación para calcular la Qibla.');
+                    });
+                } else {
+                    setErrorMsg('Tu dispositivo no soporta geolocalización.');
+                }
+
+                // Solicitar permiso para orientación (iOS 13+)
+                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    DeviceOrientationEvent.requestPermission()
+                        .then(response => {
+                            if (response === 'granted') {
+                                setPermissionGranted(true);
+                                window.addEventListener('deviceorientation', handleOrientation);
+                            } else {
+                                setErrorMsg('Permiso de brújula denegado.');
+                            }
+                        })
+                        .catch(console.error);
+                } else {
+                    // Android y otros no requieren permiso explícito de usuario
+                    setPermissionGranted(true);
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
+            };
+
+            const handleOrientation = (e) => {
+                let compass = e.webkitCompassHeading || Math.abs(e.alpha - 360);
+                setHeading(compass);
+            };
+
+            return (
+                <section id="qibla" className="qibla-section py-24 bg-[#0f172a] relative overflow-hidden flex flex-col items-center justify-center text-white text-center">
+                     <div className="absolute inset-0 w-full h-full parallax-scene opacity-50 pointer-events-none">
+                        <div className="vignette"></div>
+                    </div>
+                    
+                    <div className="relative z-20 container mx-auto px-6">
+                        <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#cda434] mb-4 block animate-pulse">Dirección Sagrada</span>
+                        <h2 className="text-4xl font-light text-white mb-8">Encuentra la <span className="font-bold text-[#cda434]">Qibla</span></h2>
+
+                        {!permissionGranted ? (
+                            <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl max-w-md mx-auto border border-white/10">
+                                <p className="mb-6 text-gray-300">Para usar la brújula, necesitamos acceso a tu ubicación y sensores de movimiento. Funciona mejor en móviles.</p>
+                                <button onClick={startCompass} className="px-8 py-3 bg-[#cda434] text-black font-bold rounded-full hover:bg-white transition-all shadow-lg">
+                                    Activar Brújula
+                                </button>
+                                {errorMsg && <p className="text-red-400 text-xs mt-4">{errorMsg}</p>}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center">
+                                <div className="compass-container" style={{ transform: `rotate(${-heading}deg)` }}>
+                                    <div className="compass-inner">
+                                        {/* La aguja apunta a la Qibla relativa al Norte */}
+                                        <div className="compass-needle" style={{ transform: `translate(-50%, -50%) rotate(${qibla}deg)` }}></div>
+                                        <div className="kaaba-icon" style={{ transform: `translateX(-50%) rotate(${qibla}deg)`, top: '20px', transformOrigin: '50% 120px' }}>🕋</div>
+                                        <div className="cardinals">
+                                            <span className="n">N</span>
+                                            <span className="s">S</span>
+                                            <span className="e">E</span>
+                                            <span className="w">O</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-8 text-center">
+                                    <p className="text-2xl font-mono text-[#cda434]">{Math.round(heading)}°</p>
+                                    <p className="text-xs text-gray-400 uppercase tracking-widest">Tu Dirección</p>
+                                    <p className="text-sm text-gray-500 mt-2">Qibla: {qibla}°</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </section>
+            );
+        };
+
         const App = () => {
             const [view, setView] = useState('home');
             const [selectedArticle, setSelectedArticle] = useState(null);
@@ -619,7 +629,7 @@
                     <DiscoverIslam />
                     <BlogSection onReadArticle={handleReadArticle} /> 
                     <PrayerSection />
-                    <QiblaSection /> {/* AÑADIDA SECCIÓN QIBLA */}
+                    <QiblaSection /> {/* AQUI ESTÁ LA BRÚJULA REAL */}
                     <Wisdom />
                     <section className="py-24 bg-white"><div className="container mx-auto px-6"><div className="text-center mb-16"><h2 className="text-4xl font-light text-gray-900">Vida en la <span className="font-bold">Mezquita</span></h2></div><div className="grid md:grid-cols-3 gap-8">{[{t: 'Madrasa', d: 'Clases de árabe y valores', i: 'book-open'},{t: 'Juventud', d: 'Deporte y convivencia', i: 'users'},{t: 'Social', d: 'Ayuda humanitaria', i: 'heart'}].map((item, i) => (<div key={i} className="p-8 border border-gray-100 hover:border-gray-300 transition-all hover:-translate-y-2 bg-[#f9f9f9]"><Icon name={item.i} size={40} className="text-gray-400 mb-6" /><h3 className="text-xl font-bold mb-2">{item.t}</h3><p className="text-gray-500 font-light">{item.d}</p></div>))}</div></div></section>
                     <DigitalLibrary />
